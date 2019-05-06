@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"bib.local.domain"},{"l":"bib.local.domain.exceptions"},{"l":"bib.local.persistence"},{"l":"bib.local.ui.cui"},{"l":"bib.local.valueobjects"},{"l":"bib.local.valueobjects.unused"}]
