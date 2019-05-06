@@ -31,14 +31,9 @@ public class Artikel {
 		this.nummer= nummer2;
 	}
 	
-	
-	
-
-
 
 	/**
 	 * Standard-Methode von Object �berschrieben.
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public boolean equals(Object anderesObjekt) {
