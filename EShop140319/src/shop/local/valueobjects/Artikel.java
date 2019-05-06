@@ -33,9 +33,11 @@ public class Artikel {
 	
 
 	/**
+	 * 
 	 * Standard-Methode von Object �berschrieben.
 	 * @see java.lang.Object#toString()
 	 */
+	
 	public boolean equals(Object anderesObjekt) {
 		if (anderesObjekt instanceof Artikel) {
 			Artikel andererArtikel = (Artikel) anderesObjekt;
