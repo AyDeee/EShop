@@ -33,7 +33,6 @@ public class Artikel {
 	
 
 	/**
-	 * 
 	 * Standard-Methode von Object �berschrieben.
 	 * @see java.lang.Object#toString()
 	 */

@@ -1,7 +1,11 @@
 package shop.local.valueobjects;
 
 public class LogbuchEintrag {
+	
+	public enum EreignisTyp { NEU, EINLAGERUNG, AUSLAGERUNG, KAUF, LOESCHUNG };
+	
 	private boolean einlagern;
+	private EreignisTyp aktion;
 	private int datum;
 	private Artikel artikel;
 	private int anzahl;
@@ -13,6 +17,8 @@ public class LogbuchEintrag {
 		this.artikel = artikel;
 		this.anzahl = anzahl;
 		this.person = person;
+		
+		this.aktion = EreignisTyp.KAUF;
 	}
 
 	

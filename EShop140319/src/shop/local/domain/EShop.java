@@ -14,7 +14,6 @@ import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Person;
 import shop.local.valueobjects.Rechnung;
 import shop.local.valueobjects.Warenkorb;
-import shop.local.domain.MitarbeiterVerwaltung;
 
 
 
@@ -83,11 +82,12 @@ public class EShop {
 		if(bestandserhoehung > richtigerArtikel.getBestand())
 		{
 			logbuch.NeuerEintrag(true, person, richtigerArtikel, bestandserhoehung);// true war Einlagern false war Auslagern
-			
+//			logbuch.NeuerEintrag(EreignisTyp.EINLAGERUNG, person, artikel, anzahl);
 			richtigerArtikel.setBestand(neuerBestand);
 		}
 		else {
 			logbuch.NeuerEintrag(false, person, richtigerArtikel, bestandserhoehung);
+//			logbuch.NeuerEintrag(EreignisTyp.AUSLAGERUNG, person, artikel, anzahl);
 			
 			richtigerArtikel.setBestand(neuerBestand);
 		}
@@ -100,12 +100,15 @@ public class EShop {
 	
 	
 	public Rechnung kaufeArtikelImWarenkorb(Kunde kunde) {
+		// KaufVerwaltung
+		// TODO return kv.kaufeArtikel...(kunde);
 		Warenkorb warenkorb = kunde.getWarenkorb();
 		
 		//Artikel aus dem Shop entfernen
 		for (ArtikelImWarenkorb artikelImWarenkorb : warenkorb.getWarenkorbEintraege()) {
 			Artikel artikel = artikelImWarenkorb.getArtikel();
 			if (artikel.getBestand() > artikelImWarenkorb.getAnzahl()) {
+				// Bestandsreduzierung über ArtikelVerwaltung
 				artikel.setBestand(artikel.getBestand() - artikelImWarenkorb.getAnzahl());
 				logbuch.NeuerEintrag(false, kunde, artikel, artikelImWarenkorb.getAnzahl());
 			}
@@ -217,19 +220,6 @@ public class EShop {
 	public ArtikelVerwaltung getArtikelVerwaltung() {
 		return meineArtikel;
 	}
-	
-	
-
-
-
-
-
-
-	
-	
-
-
-
 	
 
 }
