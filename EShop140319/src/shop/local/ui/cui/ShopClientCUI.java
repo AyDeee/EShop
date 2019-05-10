@@ -284,7 +284,7 @@ public class ShopClientCUI {
 			bestand = Integer.parseInt(best); 
 			artikel = shop.bestandErhoehen(nr, bestand, mitarbeiter);
 			
-			System.out.println("Der Bestand vom Artikel "+ "'"+ artikel.getTitel() + "'" + " mit der Artikelnummer " + "'"+artikel.getNummer()+"'"+" wurde auf "+artikel.getBestand()+" geaendert.");
+			System.out.println("Der Bestand vom Artikel "+ "'"+ artikel.getBezeichnung() + "'" + " mit der Artikelnummer " + "'"+artikel.getNummer()+"'"+" wurde auf "+artikel.getBestand()+" geaendert.");
 					
 			break;
 			
@@ -452,33 +452,39 @@ public class ShopClientCUI {
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);
 			
-			if (artikelVerwaltung.identischeNummer(nr) == false) {
-				System.out.println("Dieser Artikel ist nicht vorhanden. Erneut versuchen. ");	
-			}else {
-			shop.artikelInWarenkorb(nr, eingeloggterKunde);
-			System.out.println("Einfuegen ok");
-			}
-			
+			artikel=shop.sucheNachNummer(nr);
+
+		    shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
+		  //TODO wenn artikel nicht eingef�gt wird, weil nicht mehr verf�gbar, meldung an den kunden
+			System.out.println("Sie haben den Artikel "+ artikel.getBezeichnung()+ " erfolgreich eingef�gt");
+	
 			break;
+			
 		case "wa":									// fügt Artikel hinzu un man kann direkt die Anzahl angeben/ändern
 			
 			System.out.print("Artikelnummer > ");
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);
 			
-			if (artikelVerwaltung.identischeNummer(nr) == false) {
-				System.out.println("Dieser Artikel ist nicht vorhanden. Erneut versuchen. ");	
-			
-			}else {
-				
 			System.out.print("Anzahl > ");
 			best = liesEingabe();
 			bestand = Integer.parseInt(best);
 			
-			shop.anzahlAendernArtikelInWarenkorb(nr,bestand, eingeloggterKunde);
-			System.out.println("Einfuegen ok");
-			}
+			artikel=shop.sucheNachNummer(nr);
 			
+			if (artikel.getBestand()<bestand) {
+				System.out.println("Es sind leider nur noch " + artikel.getBestand() +" Artikel verf�gbar");
+				System.out.println("Versuche es erneut");
+			}else {
+			while (bestand==0) {
+				System.out.println("Eingabe war ung�ltig, versuche es erneut.");
+				System.out.print("Anzahl > ");
+				best = liesEingabe();
+				bestand = Integer.parseInt(best);
+			}
+			shop.anzahlAendernArtikelInWarenkorb(nr,bestand, eingeloggterKunde);
+		    System.out.println("Sie haben den Artikel "+ artikel.getBezeichnung()+ " erfolgreich eingef�gt");
+			}
 			break;
 			
 		case "wl": //Warenkorb leeren
@@ -502,7 +508,7 @@ public class ShopClientCUI {
 			
 			while (it.hasNext()) {
 				ArtikelImWarenkorb aktuellerArtikel = it.next();
-				System.out.println(laufendeNummer + ". " + aktuellerArtikel.getArtikel().getTitel() + " , " + aktuellerArtikel.getAnzahl());
+				System.out.println(laufendeNummer + ". " + aktuellerArtikel.getArtikel().getBezeichnung() + " , " + aktuellerArtikel.getAnzahl());
 				laufendeNummer++;
 			}
 	

@@ -68,7 +68,7 @@ public class Logbuch {
 			}
 			
 			builder.append(eintrag.getAnzahl() + " ");
-			builder.append(eintrag.getArtikel().getTitel() + " "); //getArtikel() --> springt in das Artikel Objekt getTitel()--> gibt den Namen aus 
+			builder.append(eintrag.getArtikel().getBezeichnung() + " "); //getArtikel() --> springt in das Artikel Objekt getTitel()--> gibt den Namen aus 
 			
 			if(eintrag.getPerson() instanceof Mitarbeiter) //überprüfen ob das Objekt Person von der Klasse mitarbeiter ist (Typ Mitarbeiter)
 			{

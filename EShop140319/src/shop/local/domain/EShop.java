@@ -65,7 +65,12 @@ public class EShop {
 		return meineArtikel.sucheArtikel(titel); 
 	}
 	
-
+	public Artikel sucheNachNummer(int nummer) {
+		
+		Artikel richtigerArtikel = meineArtikel.sucheEindeutigenArtikel(nummer);
+		return richtigerArtikel;
+	}
+	
 	//TODO MASSENGUT Varibalen hinzufügen 
 	//Methode zum Einf�gen eines neuen Artikels in den Bestand.
 	public Artikel fuegeArtikelEin(String titel, int nummer, int bestand, float preis, Person person) throws ArtikelExistiertBereitsException {

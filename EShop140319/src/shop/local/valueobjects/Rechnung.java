@@ -22,7 +22,7 @@ public class Rechnung {
 		float gesamtPreis = 0f;
 		for (ArtikelImWarenkorb artikelImWarenkorb : gekaufteArtikel) {
 			Artikel artikel = artikelImWarenkorb.getArtikel();
-			builder.append(artikel.getTitel() + " " + artikelImWarenkorb.getAnzahl() + " " + artikel.getPreis() + "€" + System.lineSeparator());
+			builder.append(artikel.getBezeichnung() + " " + artikelImWarenkorb.getAnzahl() + " " + artikel.getPreis() + "€" + System.lineSeparator());
 			gesamtPreis += artikel.getPreis() * artikelImWarenkorb.getAnzahl();
 		}
 		builder.append(System.lineSeparator());

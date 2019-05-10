@@ -67,7 +67,7 @@ public class Artikel implements Serializable {
 		return preis;
 	}
 	
-	public String getTitel() {
+	public String getBezeichnung() {
 		return bezeichnung;
 	}
 	
@@ -114,8 +114,8 @@ public class Artikel implements Serializable {
 
 	    public int compare(Artikel artikel1, Artikel artikel2) {
 	    	
-	      String artikelName1 = artikel1.getTitel().toUpperCase(); //macht aus groß und klein-schreibung nur Großschreibung
-	      String artikelName2 = artikel2.getTitel().toUpperCase(); //toLowerCase() ist das Gegenteil
+	      String artikelName1 = artikel1.getBezeichnung().toUpperCase(); //macht aus groß und klein-schreibung nur Großschreibung
+	      String artikelName2 = artikel2.getBezeichnung().toUpperCase(); //toLowerCase() ist das Gegenteil
 	      
 	      
 	      return artikelName1.compareTo(artikelName2);

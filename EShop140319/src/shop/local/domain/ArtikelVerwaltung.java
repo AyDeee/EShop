@@ -92,7 +92,7 @@ public class ArtikelVerwaltung {
 		
 		while (it.hasNext()) {
 			Artikel artikel = it.next();
-			if (artikel.getTitel().equals(bezeichnung)) {
+			if (artikel.getBezeichnung().equals(bezeichnung)) {
 				ergebnis.add(artikel);
 			}			
 		}
