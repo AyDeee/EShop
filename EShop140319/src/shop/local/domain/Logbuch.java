@@ -1,15 +1,43 @@
-package shop.local.valueobjects;
+package shop.local.domain;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.Vector;
 
-import shop.local.domain.EShop;
+import shop.local.persistance.PersistenceManager;
+import shop.local.valueobjects.Artikel;
+import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.LogbuchEintrag;
+import shop.local.valueobjects.Mitarbeiter;
+import shop.local.valueobjects.Person;
 
 public class Logbuch {
 
+	public static final String LOGSAVE = "Logbuch.save";//definieren, wie die Speicherdatei vom Logbuch heißt
+	
 	private Vector<LogbuchEintrag> eintraege;
-
-	public Logbuch() {
+	private PersistenceManager pm;
+	
+	public Logbuch(PersistenceManager pm) {
+		this.pm = pm;
 		this.eintraege =new Vector<LogbuchEintrag>();
+		
+		try {
+			liesDaten(LOGSAVE);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void Save() {
+		try {
+			schreibeDaten(LOGSAVE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void NeuerEintrag(boolean einlagern, Person person, Artikel artikel, int anzahl)
@@ -58,4 +86,40 @@ public class Logbuch {
 		builder.append("-----------" + System.lineSeparator());
 		return builder.toString(); // toString lässt die einzelnen Zeichenketten zusammen ausgeben 
 	}
+	
+	public void schreibeDaten(String datei) throws IOException {
+		// PersistenzManager f�r Schreibvorg�nge �ffnen
+		pm.openForWriting(datei);
+
+		Iterator<LogbuchEintrag> it = eintraege.iterator();
+		while (it.hasNext()) {
+			LogbuchEintrag l = it.next();
+			pm.speichereLogbuchEintrag(l);
+		}
+		// Persistenz-Schnittstelle wieder schlie�en
+		pm.close();
+	}
+
+	
+	public void liesDaten(String datei) throws IOException, ClassNotFoundException {
+		// PersistenzManager f�r Lesevorg�nge �ffnen
+		try {
+			pm.openForReading(datei);
+
+			LogbuchEintrag log;
+			do {
+				// Artikel-Objekt einlesen
+				log = pm.ladeLogbuchEintrag();
+				if (log != null) {
+					// Artikel in Liste einf�gen
+					eintraege.add(log);
+				}
+			} while (log != null);
+		} catch (IOException e) {
+			// TODO: exception
+		}
+		// Persistenz-Schnittstelle wieder schlie�en
+		pm.close();
+	}
+	
 }

@@ -1,7 +1,14 @@
 package shop.local.valueobjects;
 
-public class ArtikelImWarenkorb{
-	
+import java.io.Serializable;
+
+public class ArtikelImWarenkorb implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 510314208126221534L;
+
 	public ArtikelImWarenkorb(Artikel neuerArtikel) {
 		artikel = neuerArtikel;
 		anzahl = 1;

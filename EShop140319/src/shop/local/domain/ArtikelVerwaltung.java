@@ -2,12 +2,13 @@ package shop.local.domain;
 
 
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.persistance.PersistenceManager;
 import shop.local.valueobjects.Artikel;
-import shop.local.valueobjects.Logbuch;
 import shop.local.valueobjects.Person;
 import shop.local.valueobjects.Warenkorb;
 
@@ -18,15 +19,32 @@ import shop.local.valueobjects.Warenkorb;
  */
 public class ArtikelVerwaltung {
 
+	static final String ARTIKELSAVE = "Artikel.save";
+	
 	// Verwaltung des Artikelbestands in einer verketteten Liste
 	private Vector <Artikel> artikelListe = new Vector <Artikel>();
 	private Logbuch logbuch; 
+	private PersistenceManager pm;
 	
-	public ArtikelVerwaltung(Logbuch logbuch) {
-		
+	public ArtikelVerwaltung(Logbuch logbuch, PersistenceManager pm) {
+		this.pm = pm;
 		this.logbuch = logbuch; 
+		try {
+			liesDaten(ARTIKELSAVE);
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public void Save() {
+		try {
+			schreibeDaten(ARTIKELSAVE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Methode, die ein Artikel an das Ende der Artikelliste einf�gt.
@@ -138,6 +156,52 @@ public class ArtikelVerwaltung {
 	
 	}
 	
+	/**
+	 * Methode zum Schreiben der Artikeldaten in eine Datei.
+	 * 
+	 * @param datei
+	 *            Datei, in die der Artikelbestand geschrieben werden soll
+	 * @throws IOException
+	 */
+	public void schreibeDaten(String datei) throws IOException {
+		// PersistenzManager f�r Schreibvorg�nge �ffnen
+		pm.openForWriting(datei);
+
+		Iterator<Artikel> it = artikelListe.iterator();
+		while (it.hasNext()) {
+			Artikel a = it.next();
+			pm.speichereArtikel(a);
+		}
+		// Persistenz-Schnittstelle wieder schlie�en
+		pm.close();
+	}
+
+	/**
+	 * Methode zum Einlesen von daten aus einer Datei.
+	 * 
+	 * @throws IOException
+	 * @throws ClassNotFoundException 
+	 */
+	public void liesDaten(String datei) throws IOException, ClassNotFoundException {
+		// PersistenzManager f�r Lesevorg�nge �ffnen
+		try {
+			pm.openForReading(datei);
+
+			Artikel einArtikel;
+			do {
+				// Artikel-Objekt einlesen
+				einArtikel = pm.ladeArtikel();
+				if (einArtikel != null) {
+					// Artikel in Liste einf�gen
+					artikelListe.add(einArtikel);
+				}
+			} while (einArtikel != null);
+		} catch (IOException e) {
+			// TODO: exception
+		}
+		// Persistenz-Schnittstelle wieder schlie�en
+		pm.close();
+	}
 	
 
 

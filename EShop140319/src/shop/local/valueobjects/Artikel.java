@@ -1,13 +1,19 @@
 package shop.local.valueobjects;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Klasse zur Repr�sentation einzelner Artikel
  * 
  */
-public class Artikel {
+public class Artikel implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3052253964821851636L;
+	
 	// Attribute zur Beschreibung eines Artikels:
 	private String bezeichnung;
 	private int nummer;

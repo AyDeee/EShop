@@ -1,6 +1,7 @@
 package shop.local.ui.cui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -10,6 +11,7 @@ import java.util.Vector;
 
 import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
+import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
@@ -35,8 +37,19 @@ public class ShopClientCUI {
 	private EShop shop;
 	private BufferedReader in;
 	private ArtikelVerwaltung artikelVerwaltung;
+	private boolean datenInitialisieren;
 	
 	public ShopClientCUI() throws IOException {
+		File f = new File(Logbuch.LOGSAVE);
+		if(f.exists()) { 
+			//wenn mindestens das Logbuch gespeichert wurde, brauchen keine Testdaten erzeigt werden
+			datenInitialisieren = false;
+		}
+		else
+		{
+			datenInitialisieren = true;
+		}
+		
 		// die Shop-Verwaltung erledigt die Aufgaben, 
 		// die nichts mit Ein-/Ausgabe zu tun haben
 		shop = new EShop();
@@ -578,26 +591,28 @@ public class ShopClientCUI {
 	public void run() throws MitarbeiterExistiertBereitsException {
 		// Variable für Eingaben von der Konsole
 		String input = ""; 
-		Mitarbeiter m = null;
-		try {
-			m = shop.fuegeMitarbeiterEin("klaus","musterstrasse","3","12345","musterstadt","DE2345678764544","123");
-			shop.fuegeMitarbeiterEin("sarah","musteralle","5","15675","musterdorf","DE2345678764544","123");
-		}catch (MitarbeiterExistiertBereitsException e2) {
-			e2.printStackTrace();
+		if(datenInitialisieren == true)
+		{
+			Mitarbeiter m = null;
+			try {
+				m = shop.fuegeMitarbeiterEin("klaus","musterstrasse","3","12345","musterstadt","DE2345678764544","123");
+				shop.fuegeMitarbeiterEin("sarah","musteralle","5","15675","musterdorf","DE2345678764544","123");
+			}catch (MitarbeiterExistiertBereitsException e2) {
+				e2.printStackTrace();
+			}
+			try {
+				shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
+				shop.fuegeArtikelEin("banane", 13, 100, 1.30f,m); //bei float immer f dahinter
+				shop.fuegeArtikelEin("tisch", 11, 4, 15.0f,m);
+	
+			} catch (ArtikelExistiertBereitsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
+			shop.fuegeKundeEin("Kunde2", "strasse"	, "1","12344","ort", "DE12345675432", "123");
+			shop.fuegeKundeEin("Kunde3", "strasse"	, "1","12344","ort", "DE12345675432", "123");
 		}
-		try {
-			shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
-			shop.fuegeArtikelEin("banane", 13, 100, 1.30f,m); //bei float immer f dahinter
-			shop.fuegeArtikelEin("tisch", 11, 4, 15.0f,m);
-
-		} catch (ArtikelExistiertBereitsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
-		shop.fuegeKundeEin("Kunde2", "strasse"	, "1","12344","ort", "DE12345675432", "123");
-		shop.fuegeKundeEin("Kunde3", "strasse"	, "1","12344","ort", "DE12345675432", "123");
-
 		
 
 		while(true) {
@@ -656,7 +671,7 @@ public class ShopClientCUI {
 		}while (!input.equals("q"));
 		
 		}
-	
+		shop.Save();
 	}
 		
 

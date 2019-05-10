@@ -9,12 +9,11 @@ import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
-import shop.local.valueobjects.Logbuch;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Person;
 import shop.local.valueobjects.Rechnung;
 import shop.local.valueobjects.Warenkorb;
-
+import shop.local.persistance.PersistenceManager;
 
 
 
@@ -27,18 +26,26 @@ public class EShop {
 	private MitarbeiterVerwaltung meineMitarbeiter;
 	private KundenVerwaltung meineKunden;
 	private Logbuch logbuch;
+	private PersistenceManager pm;
 	
 
-	public EShop() throws IOException {
-
-		logbuch = new Logbuch();
-		meineArtikel = new ArtikelVerwaltung(logbuch);
-		meineMitarbeiter= new MitarbeiterVerwaltung();
-		meineKunden=new KundenVerwaltung();
+	public EShop() {
+		pm = new PersistenceManager();
+		logbuch = new Logbuch(pm);
+		meineArtikel = new ArtikelVerwaltung(logbuch, pm);
+		meineMitarbeiter= new MitarbeiterVerwaltung(pm);
+		meineKunden=new KundenVerwaltung(pm);
 
 
 	}
 
+	public void Save() {
+		meineKunden.Save();
+		meineMitarbeiter.Save();
+		meineArtikel.Save();
+		logbuch.Save();
+	}
+	
 /**
  * 
  * - - - - - - - - ARTIKEL - - - - - - - - - - - - 
@@ -84,14 +91,12 @@ public class EShop {
 			logbuch.NeuerEintrag(true, person, richtigerArtikel, bestandserhoehung);// true war Einlagern false war Auslagern
 //			logbuch.NeuerEintrag(EreignisTyp.EINLAGERUNG, person, artikel, anzahl);
 			richtigerArtikel.setBestand(neuerBestand);
-		}
-		else {
+		}else {
 			logbuch.NeuerEintrag(false, person, richtigerArtikel, bestandserhoehung);
 //			logbuch.NeuerEintrag(EreignisTyp.AUSLAGERUNG, person, artikel, anzahl);
 			
 			richtigerArtikel.setBestand(neuerBestand);
 		}
-		
 		
 		
 		
