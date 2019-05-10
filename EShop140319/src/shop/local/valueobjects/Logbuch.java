@@ -32,7 +32,7 @@ public class Logbuch {
 		for (LogbuchEintrag eintrag : eintraege) { // Die beiden oberen Zeilen machen genau das Gleiche wie diese eine Zeile
 			
 			builder.append(eintrag.getDatum() + " ");
-			if (eintrag.isEinlagern()) //isEingelagert ist der Getter von Einlagern
+			if (eintrag.isEinlagern() == true) //isEingelagert ist der Getter von Einlagern
 			{
 				builder.append("Einlagern: ");
 			}else{

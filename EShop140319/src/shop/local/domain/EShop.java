@@ -79,7 +79,7 @@ public class EShop {
 		
 		int neuerBestand = richtigerArtikel.getBestand() + bestandserhoehung;
 		
-		if(bestandserhoehung > richtigerArtikel.getBestand())
+		if(bestandserhoehung > 0)
 		{
 			logbuch.NeuerEintrag(true, person, richtigerArtikel, bestandserhoehung);// true war Einlagern false war Auslagern
 //			logbuch.NeuerEintrag(EreignisTyp.EINLAGERUNG, person, artikel, anzahl);
