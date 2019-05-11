@@ -16,7 +16,7 @@ import shop.local.valueobjects.Warenkorb;
 import shop.local.persistance.PersistenceManager;
 
 
-
+//KLAPPT DAS JETZT ODER WAS
 
 public class EShop {
 	
