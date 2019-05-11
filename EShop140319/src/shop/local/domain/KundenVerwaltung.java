@@ -5,10 +5,9 @@ import java.util.Iterator;
 
 import java.util.Vector;
 
+import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.persistance.PersistenceManager;
-import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.Kunde;
-import shop.local.valueobjects.Mitarbeiter;
 
 public class KundenVerwaltung {
 	
@@ -39,8 +38,13 @@ public class KundenVerwaltung {
 	}
 	
 	//Methode, um neuen Kunden zur Liste hinzuzuf�gen
-	public void einfuegen(Kunde einKunde)  {
-		kundenListe.add(einKunde);
+	public void einfuegen(Kunde einKunde) throws KundeExistiertBereitsException {
+		
+		if (kundenListe.contains(einKunde)) {
+			throw new KundeExistiertBereitsException(einKunde, " existiert bereits. Sie koennen sich einloggen.");
+		}
+
+		kundenListe.add(einKunde); 
 	}
 
 		

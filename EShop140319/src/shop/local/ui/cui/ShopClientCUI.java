@@ -13,12 +13,12 @@ import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
 import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
 import shop.local.valueobjects.Mitarbeiter;
-import shop.local.valueobjects.Person;
 import shop.local.valueobjects.Rechnung;
 
 
@@ -64,6 +64,7 @@ public class ShopClientCUI {
 	 */
 	private String liesEingabe() throws IOException {
 		// einlesen von Konsole
+		
 		return in.readLine();
 	}
 	
@@ -93,7 +94,7 @@ public class ShopClientCUI {
 	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException {
 		
 		
-		Mitarbeiter mitarbeiter;
+		Mitarbeiter mitarbeiter = null;
 		String input = "";
 		
 		// Variablen fuer den Mitarbeiter Login
@@ -158,34 +159,37 @@ public class ShopClientCUI {
 			System.out.println("IBAN>");
 			iban = liesEingabe();
 			
-			// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
-			mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-			
+			try {
+				mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
+				System.out.println("Registrieren erfolgreich - Ihre ID: "+ mitarbeiter.getId());
+			}catch (MitarbeiterExistiertBereitsException me) {
+				// Hier Fehlerbehandlung...
+				System.out.println(me.getMessage());
+				//me.printStackTrace()
+			} 
 				if (mitarbeiter != null) {
-					System.out.println("Registrieren erfolgreich - Ihre ID: "+ mitarbeiter.getId());
 					do {
+						System.out.println("Willkommen "+ mitarbeiter.getName()+"!");
 						gibMitarbeiterMenueAus();
-					try {
-						input = liesEingabe();
-						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						try {
+							input = liesEingabe();
+							verarbeiteEingabeMitarbeiter(input, mitarbeiter);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					} while (!input.equals("q"));
-				}else {
-					System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");	
+					}while (!input.equals("q"));
+					
 				}
-			break;
-			
-		}
 		
-	}
+			break;
+			}
+			
+			// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
+			//mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
+		}
 	
 
-
-				
-		
 	private void gibMitarbeiterMenueAus() {	
 		System.out.print("Befehle: \n  ---------------------");
 		System.out.print("         \n  Artikel ausgeben:  			'a'");
@@ -201,8 +205,6 @@ public class ShopClientCUI {
 		System.out.print("> "); // Prompt
 		System.out.flush(); // ohne NL ausgeben
 	}
-
-	
 	
 	/* (non-Javadoc)
 	 * 
@@ -295,6 +297,8 @@ public class ShopClientCUI {
 			System.out.print(ausgabe);
 			break;
 		}
+		
+		
 	}
 	
 	
@@ -304,8 +308,8 @@ public class ShopClientCUI {
  */
 
 	//Registrieren oder einloggen
-	private void verarbeiteEingabeStartMenueKunde(String line) throws IOException {
-		Kunde kunde;
+	private void verarbeiteEingabeStartMenueKunde(String line) throws IOException, KundeExistiertBereitsException  {
+		Kunde kunde = null;
 		String input = "";
 		
 		// Variabeln f�r Mitarbeiter Login
@@ -370,30 +374,39 @@ public class ShopClientCUI {
 			wohnort = liesEingabe();
 			System.out.println("IBAN>");
 			iban = liesEingabe();
-			
-			
-			kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-			
-			if (kunde != null) {
+
+			try {
+				kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
 				System.out.println("Registrieren erfolgreich - Ihre ID: "+ kunde.getId());
-				do {
-				gibKundenMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeKunde(input, kunde);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			}catch (KundeExistiertBereitsException ke) {
+				// Hier Fehlerbehandlung...
+				System.out.println(ke.getMessage());
+				//me.printStackTrace()
 			} 
-				while (!input.equals("q"));
-				
-			} else {
-				System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");	
+			if (kunde != null) {
+				do {
+					System.out.println("Willkommen "+ kunde.getName()+"!");
+					gibKundenMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeKunde(input, kunde);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}while (!input.equals("q"));
 			}
+		
 			break;
 		}
+		
 	}
+
+	
+
+		
+
+	
 	
 	
 	private void gibKundenMenueAus() {
@@ -594,7 +607,7 @@ public class ShopClientCUI {
 	 * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException {
+	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
 		// Variable für Eingaben von der Konsole
 		String input = ""; 
 		if(datenInitialisieren == true)
@@ -603,8 +616,8 @@ public class ShopClientCUI {
 			try {
 				m = shop.fuegeMitarbeiterEin("klaus","musterstrasse","3","12345","musterstadt","DE2345678764544","123");
 				shop.fuegeMitarbeiterEin("sarah","musteralle","5","15675","musterdorf","DE2345678764544","123");
-			}catch (MitarbeiterExistiertBereitsException e2) {
-				e2.printStackTrace();
+			}catch (MitarbeiterExistiertBereitsException me) {
+				me.printStackTrace();
 			}
 			try {
 				shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
@@ -615,9 +628,15 @@ public class ShopClientCUI {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
-			shop.fuegeKundeEin("Kunde2", "strasse"	, "1","12344","ort", "DE12345675432", "123");
-			shop.fuegeKundeEin("Kunde3", "strasse"	, "1","12344","ort", "DE12345675432", "123");
+			
+			try {
+				shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
+				shop.fuegeKundeEin("Kunde2", "strasse"	, "1","12344","ort", "DE12345675432", "123");
+				shop.fuegeKundeEin("Kunde3", "strasse"	, "1","12344","ort", "DE12345675432", "123");
+			}catch (KundeExistiertBereitsException ke) {
+				ke.printStackTrace();
+			}
+			
 		}
 		
 
@@ -663,7 +682,7 @@ public class ShopClientCUI {
 				}
 	
 		//---------------------Fehlerhafte Eingabe---------------------------		
-				
+
 			}else {
 				System.out.println("Eingabe nicht erkannt, versuche es erneut");
 				gibMenueAus();
@@ -685,7 +704,7 @@ public class ShopClientCUI {
 	 * Die main-Methode...
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException {
+	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();

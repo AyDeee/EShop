@@ -1,10 +1,9 @@
 package shop.local.domain;
-
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
@@ -187,6 +186,8 @@ public class EShop {
 		meineMitarbeiter.einfuegen(m);
 		
 		return m;
+
+		
 	}
 	
 	//Methode die prueft, ob es diesen Mitarbeiter mit der id und diesem Passwort gibt
@@ -205,8 +206,8 @@ public class EShop {
  * 
  */
 	//Methode zum einfügen eines neuen Kunden
-	public Kunde fuegeKundeEin( String name, String str, String nr, String plz, String ort, String iban, String pw) {
-		int id=meineKunden.kundenAnzahl();
+	public Kunde fuegeKundeEin( String name, String str, String nr, String plz, String ort, String iban, String pw) throws KundeExistiertBereitsException {
+		int id = meineKunden.kundenAnzahl();
 		Kunde k = new Kunde(id, name, str, nr, plz, ort, iban, pw);
 		meineKunden.einfuegen(k);
 		

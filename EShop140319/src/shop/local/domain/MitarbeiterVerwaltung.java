@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.persistance.PersistenceManager;
 import shop.local.valueobjects.Mitarbeiter;
 
@@ -36,7 +37,13 @@ public class MitarbeiterVerwaltung {
 	
 	//Methode, die Mitarbeiter einf�gt
 	
-	public void einfuegen(Mitarbeiter einMitarbeiter)  {
+	public void einfuegen(Mitarbeiter einMitarbeiter) throws MitarbeiterExistiertBereitsException {
+		
+		
+		if (mitarbeiterListe.contains(einMitarbeiter)) {
+			throw new MitarbeiterExistiertBereitsException(einMitarbeiter, " existiert bereits. Sie koennen sich einloggen.");
+		}
+
 		mitarbeiterListe.add(einMitarbeiter); //in mitarbeiterListe wird Mitarbeiter hinzugefügt 
 	
 	}
