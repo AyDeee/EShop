@@ -377,7 +377,7 @@ public class ShopClientCUI {
 
 			try {
 				kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-				System.out.println("Registrieren erfolgreich - Ihre ID: "+ kunde.getId());
+				System.out.println("Registrieren erfolgreich - Ihre ID: "+ kunde.getId()); //IST MOM. DRIN ALS PRUEFUNG FUER MICH
 			}catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung...
 				System.out.println(ke.getMessage());
