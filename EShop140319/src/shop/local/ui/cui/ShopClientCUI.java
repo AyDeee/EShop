@@ -21,17 +21,6 @@ import shop.local.valueobjects.Kunde;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Rechnung;
 
-
-
-/**
- * Klasse für sehr einfache Benutzungsschnittstelle für die
- * Bibliothek. Die Benutzungsschnittstelle basiert auf Ein-
- * und Ausgaben auf der Kommandozeile, daher der Name CUI
- * (Command line User Interface).
- * 
- * @author teschke
- * @version 1 (Verwaltung der Buecher in verketteter Liste)
- */
 public class ShopClientCUI {
 
 	private EShop shop;
@@ -67,10 +56,7 @@ public class ShopClientCUI {
 		
 		return in.readLine();
 	}
-	
-	
-	
-	
+
 	private void gibMenueAus() {
 		System.out.println("Weiter als Mitarbeiter  'm'");
 		System.out.println("Weiter als Kunde 	'k'");
@@ -91,7 +77,7 @@ public class ShopClientCUI {
  */
 	
 	//Verarbeitung einloggen oder registrieren -->line = Eingabe
-	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException {
+	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException, ArtikelExistiertBereitsException {
 		
 		
 		Mitarbeiter mitarbeiter = null;
@@ -129,10 +115,10 @@ public class ShopClientCUI {
 				System.out.println("Einloggen erfolgreich - Willkommen "+ mitarbeiter.getName()+"!");
 				do {
 					gibMitarbeiterMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-				} catch (IOException e) {
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
+					}catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					}
@@ -171,13 +157,9 @@ public class ShopClientCUI {
 					do {
 						System.out.println("Willkommen "+ mitarbeiter.getName()+"!");
 						gibMitarbeiterMenueAus();
-						try {
-							input = liesEingabe();
-							verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						input = liesEingabe();
+						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
+						
 					}while (!input.equals("q"));
 					
 				}
@@ -211,7 +193,7 @@ public class ShopClientCUI {
 	 * Interne (private) Methode zur Verarbeitung von Eingaben
 	 * und Ausgabe von Ergebnissen.
 	 */
-	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException {
+	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException, ArtikelExistiertBereitsException {
 		String nummer;
 		int nr;
 		String titel;
@@ -252,10 +234,10 @@ public class ShopClientCUI {
 			try {
 				shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
 				System.out.println("Einfuegen ok");
-			} catch (ArtikelExistiertBereitsException e) {
-				// Hier Fehlerbehandlung...
-				System.out.println("Fehler beim Einfuegen");
-				e.printStackTrace(); //zeigt den genauen Ort wo im Programm die Exception erzeugt wurde
+			} catch (ArtikelExistiertBereitsException ae) {
+				// Hier Fe
+				System.out.println(ae.getMessage());
+				//ae.printStackTrace(); //zeigt den genauen Ort wo im Programm die Exception erzeugt wurde
 			}
 			break;
 		case "f":
@@ -607,7 +589,7 @@ public class ShopClientCUI {
 	 * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
+	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
 		// Variable für Eingaben von der Konsole
 		String input = ""; 
 		if(datenInitialisieren == true)
@@ -704,7 +686,7 @@ public class ShopClientCUI {
 	 * Die main-Methode...
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
+	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();

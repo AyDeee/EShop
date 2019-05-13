@@ -52,7 +52,7 @@ public class ArtikelVerwaltung {
 	 */
 	public void einfuegen(Artikel einArtikel, Person person) throws ArtikelExistiertBereitsException {
 		if (artikelListe.contains(einArtikel)) { //überprüft ob Nummer schon vergeben
-			throw new ArtikelExistiertBereitsException(einArtikel, " - in 'einfuegen()'");
+			throw new ArtikelExistiertBereitsException(einArtikel);
 		}
 
 		// das �bernimmt die ArtikelListe:
