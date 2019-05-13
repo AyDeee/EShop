@@ -278,10 +278,15 @@ public class ShopClientCUI {
 			}
 			break;
 		case "f":
-			System.out.print("titel  > ");
-			titel = liesEingabe();
-			liste = shop.sucheNachTitel(titel);
-			System.out.print(liste);
+			System.out.print("nummer > ");
+			nummer = liesEingabe();			//man kann immer nur einen String einlesen und dann zum Int konverten
+			nr = Integer.parseInt(nummer);
+			try {
+				artikel = shop.sucheNachNummer(nr);
+				System.out.print(artikel);
+			} catch (ArtikelExistiertNichtException aen) {
+				System.out.println(aen.getMessage());
+			}
 			break;
 		case "sa":
 			liste = shop.gibAlleArtikel(); //macht Liste von allen Artikeln
@@ -479,11 +484,17 @@ public class ShopClientCUI {
 			gibArtikellisteAus(liste);
 			break;
 		case "f":
-			System.out.print("titel  > ");
-			titel = liesEingabe();
-			liste = shop.sucheNachTitel(titel);
-			System.out.print(liste);
+			System.out.print("nummer > ");
+			nummer = liesEingabe();			//man kann immer nur einen String einlesen und dann zum Int konverten
+			nr = Integer.parseInt(nummer);
+			try {
+				artikel = shop.sucheNachNummer(nr);
+				System.out.print(artikel);
+			} catch (ArtikelExistiertNichtException aen) {
+				System.out.println(aen.getMessage());
+			}
 			break;
+		
 		case "sa":
 			liste = shop.gibAlleArtikel();
 			gibArtikellisteAlphAus(liste);
