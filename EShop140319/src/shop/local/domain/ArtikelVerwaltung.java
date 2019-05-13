@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.persistance.PersistenceManager;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.Person;
@@ -63,7 +64,7 @@ public class ArtikelVerwaltung {
 	
 	//Methode zum Loeschen eines Artikels aus dem Bestand. 
 	
-	public void loeschen(int id, Person person) {
+	public void loeschen(int id, Person person) throws ArtikelExistiertNichtException {
 		int index = 0;
 		while(index < artikelListe.size())
 		{
@@ -72,8 +73,12 @@ public class ArtikelVerwaltung {
 				artikelListe.remove(index);
 				logbuch.NeuerEintrag(false, person, currentArtikel, currentArtikel.getBestand());
 				return;//funktioniert nur wenn eine id nur einmalig vergeben werden kann
-			} else {
-				index++;	
+			}
+			else if (currentArtikel.getNummer() != id) {
+				throw new ArtikelExistiertNichtException(currentArtikel);
+			}
+			else {
+				index++;
 			}
 		}	
 	}

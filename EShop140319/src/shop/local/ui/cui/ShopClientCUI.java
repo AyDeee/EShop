@@ -13,6 +13,7 @@ import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
 import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
@@ -77,7 +78,7 @@ public class ShopClientCUI {
  */
 	
 	//Verarbeitung einloggen oder registrieren -->line = Eingabe
-	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException, ArtikelExistiertBereitsException {
+	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException,  ArtikelExistiertNichtException, ArtikelExistiertBereitsException {
 		
 		
 		Mitarbeiter mitarbeiter = null;
@@ -149,24 +150,19 @@ public class ShopClientCUI {
 				mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
 				System.out.println("Registrieren erfolgreich - Ihre ID: "+ mitarbeiter.getId());
 			}catch (MitarbeiterExistiertBereitsException me) {
-				// Hier Fehlerbehandlung...
 				System.out.println(me.getMessage());
 				//me.printStackTrace()
 			} 
-				if (mitarbeiter != null) {
-					do {
-						System.out.println("Willkommen "+ mitarbeiter.getName()+"!");
-						gibMitarbeiterMenueAus();
-						input = liesEingabe();
-						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-						
-					}while (!input.equals("q"));
-					
-				}
-		
+			if (mitarbeiter != null) {
+				do {
+					System.out.println("Willkommen "+ mitarbeiter.getName()+"!");
+					gibMitarbeiterMenueAus();
+					input = liesEingabe();
+					verarbeiteEingabeMitarbeiter(input, mitarbeiter);						
+				}while (!input.equals("q"));
+			}
 			break;
 			}
-			
 			// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
 			//mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
 		}
@@ -188,12 +184,7 @@ public class ShopClientCUI {
 		System.out.flush(); // ohne NL ausgeben
 	}
 	
-	/* (non-Javadoc)
-	 * 
-	 * Interne (private) Methode zur Verarbeitung von Eingaben
-	 * und Ausgabe von Ergebnissen.
-	 */
-	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException, ArtikelExistiertBereitsException {
+	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException,ArtikelExistiertNichtException, ArtikelExistiertBereitsException {
 		String nummer;
 		int nr;
 		String titel;
@@ -214,8 +205,17 @@ public class ShopClientCUI {
 			// lies die notwendigen Parameter, einzeln pro Zeile
 			System.out.print("nummer > ");
 			nummer = liesEingabe();
-			nr = Integer.parseInt(nummer);			
-			shop.loescheArtikel(nr, mitarbeiter);
+			nr = Integer.parseInt(nummer);
+			try {
+				shop.loescheArtikel(nr, mitarbeiter);
+			} catch (ArtikelExistiertNichtException aen) {
+				System.out.println(aen.getMessage());
+				//ae.printStackTrace(); 
+				
+			}
+			//me.printStackTrace()
+			
+			
 			break;
 		case "e":
 			// lies die notwendigen Parameter, einzelns pro Zeile
@@ -235,9 +235,8 @@ public class ShopClientCUI {
 				shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
 				System.out.println("Einfuegen ok");
 			} catch (ArtikelExistiertBereitsException ae) {
-				// Hier Fe
 				System.out.println(ae.getMessage());
-				//ae.printStackTrace(); //zeigt den genauen Ort wo im Programm die Exception erzeugt wurde
+				//ae.printStackTrace(); 
 			}
 			break;
 		case "f":
@@ -589,7 +588,7 @@ public class ShopClientCUI {
 	 * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
+	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException {
 		// Variable für Eingaben von der Konsole
 		String input = ""; 
 		if(datenInitialisieren == true)
@@ -686,7 +685,7 @@ public class ShopClientCUI {
 	 * Die main-Methode...
 	 * @throws MitarbeiterExistiertBereitsException 
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
+	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException, ArtikelExistiertNichtException {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();

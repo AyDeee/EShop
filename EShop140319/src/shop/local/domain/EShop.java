@@ -3,6 +3,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
@@ -79,7 +80,7 @@ public class EShop {
 	}
 	
 	//Methode zum l�schen eines Artikels
-	public void loescheArtikel(int nummer, Person person) {
+	public void loescheArtikel(int nummer, Person person) throws ArtikelExistiertNichtException{
 		meineArtikel.loeschen(nummer, person);
 	}
 	
@@ -123,7 +124,14 @@ public class EShop {
 			}
 			else if (artikel.getBestand() == artikelImWarenkorb.getAnzahl())
 			{
-				loescheArtikel(artikel.getNummer(), kunde);
+				
+				try {
+					loescheArtikel(artikel.getNummer(), kunde);
+				} catch (ArtikelExistiertNichtException aen) {
+					// TODO Auto-generated catch block
+					aen.printStackTrace();
+				}
+				
 			}
 			else
 			{
