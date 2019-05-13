@@ -15,8 +15,8 @@ public class ArtikelExistiertBereitsException extends Exception {
 	 * @param artikel Das bereits existierende Buch
 	 * @param zusatzMsg zusätzlicher Text für die Fehlermeldung
 	 */
-	public ArtikelExistiertBereitsException(Artikel artikel, String zusatzMsg) {
+	public ArtikelExistiertBereitsException(Artikel artikel) {
 		super("Artikel mit Titel " + artikel.getBezeichnung() + " und Nummer " + artikel.getNummer() 
-				+ " existiert bereits" + zusatzMsg);
+				+ " existiert bereits");
 	}
 }

@@ -124,7 +124,7 @@ public class ArtikelVerwaltung {
 	 * @return Artikel aus der Liste
 	 */
 	
-	public Artikel sucheEindeutigenArtikel(int nummer) {
+	public Artikel sucheEindeutigenArtikel(int nummer)throws ArtikelExistiertNichtException {
 
 //		for(Artikel currentArtikel: artikelListe)				Variante for each Schleife 
 //		{
@@ -132,6 +132,7 @@ public class ArtikelVerwaltung {
 //				return currentArtikel;
 //			}
 //		}
+
 		
 		int index = 0;
 		while(index<artikelListe.size())
@@ -140,9 +141,10 @@ public class ArtikelVerwaltung {
 			if(currentArtikel.getNummer() == nummer) {
 				return currentArtikel;
 			}
-			else {
-				index++;	
+			else if (currentArtikel.getNummer() != nummer) {
+				throw new ArtikelExistiertNichtException(currentArtikel);
 			}
+			//index++
 			
 		}
 		return null;

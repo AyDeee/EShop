@@ -13,6 +13,7 @@ import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
 import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.FalscheBestandsgroesseException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
@@ -236,7 +237,12 @@ public class ShopClientCUI {
 			System.out.print("nummer > ");
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);			
-			shop.loescheArtikel(nr, mitarbeiter);
+			try {
+				shop.loescheArtikel(nr, mitarbeiter);
+			} catch (ArtikelExistiertNichtException aen) {
+				System.out.println(aen.getMessage());
+				
+			}
 			break;
 		case "e":
 			// lies die notwendigen Parameter, einzelns pro Zeile
@@ -308,6 +314,8 @@ public class ShopClientCUI {
 				
 			} catch (FalscheBestandsgroesseException be) {
 				System.out.println(be.getMessage());
+			} catch (ArtikelExistiertNichtException aen) {
+				System.out.println(aen.getMessage());
 			}	
 			break;
 			
@@ -372,6 +380,9 @@ public class ShopClientCUI {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				catch (ArtikelExistiertNichtException aen) {
+					System.out.println(aen.getMessage());
+				}
 			} 
 				while (!input.equals("q"));
 			} else {
@@ -415,6 +426,10 @@ public class ShopClientCUI {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				   catch (ArtikelExistiertNichtException aen) {
+					// TODO Auto-generated catch block
+					aen.printStackTrace();
+				}
 				}while (!input.equals("q"));
 			}
 		
@@ -448,14 +463,14 @@ public class ShopClientCUI {
 		}
 	
 	
-	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde) throws IOException {
+	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde) throws IOException, ArtikelExistiertNichtException {
 		String nummer;
 		int nr;
 		String titel;
 		Vector <Artikel> liste;
 		String best;
 		int bestand;
-		Artikel artikel;
+		Artikel artikel = null;
 		
 		// Eingabe bearbeiten:
 		switch (line) {
@@ -486,9 +501,15 @@ public class ShopClientCUI {
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);
 			
-			artikel=shop.sucheNachNummer(nr);
+			try {
+				artikel=shop.sucheNachNummer(nr);
+				shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
+			} catch (ArtikelExistiertNichtException aen) {
+				// TODO Auto-generated catch block
+				aen.printStackTrace();
+			}
 
-		    shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
+		    //shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
 		  //TODO wenn artikel nicht eingef�gt wird, weil nicht mehr verf�gbar, meldung an den kunden
 			System.out.println("Sie haben den Artikel "+ artikel.getBezeichnung()+ " erfolgreich eingef�gt");
 	

@@ -3,6 +3,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.FalscheBestandsgroesseException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
@@ -65,7 +66,7 @@ public class EShop {
 		return meineArtikel.sucheArtikel(titel); 
 	}
 	
-	public Artikel sucheNachNummer(int nummer) {
+	public Artikel sucheNachNummer(int nummer) throws ArtikelExistiertNichtException {
 		
 		Artikel richtigerArtikel = meineArtikel.sucheEindeutigenArtikel(nummer);
 		return richtigerArtikel;
@@ -80,12 +81,12 @@ public class EShop {
 	}
 	
 	//Methode zum l�schen eines Artikels
-	public void loescheArtikel(int nummer, Person person) {
+	public void loescheArtikel(int nummer, Person person) throws ArtikelExistiertNichtException {
 		meineArtikel.loeschen(nummer, person);
 	}
 	
 	//Methode, die den Bestand eines Artikels erh�ht
-	public Artikel bestandErhoehen(int nr, int bestandserhoehung, Person person) throws FalscheBestandsgroesseException {
+	public Artikel bestandErhoehen(int nr, int bestandserhoehung, Person person) throws FalscheBestandsgroesseException, ArtikelExistiertNichtException{
 		
 		Artikel richtigerArtikel = meineArtikel.sucheEindeutigenArtikel(nr);
 		
@@ -109,7 +110,7 @@ public class EShop {
 	}
 	
 	
-	public Rechnung kaufeArtikelImWarenkorb(Kunde kunde) {
+	public Rechnung kaufeArtikelImWarenkorb(Kunde kunde) throws ArtikelExistiertNichtException {
 		// KaufVerwaltung
 		// TODO return kv.kaufeArtikel...(kunde);
 		Warenkorb warenkorb = kunde.getWarenkorb();
@@ -150,7 +151,7 @@ public class EShop {
 	
 	
 
-	public void artikelInWarenkorb(int artikelnummer, Kunde eingeloggterKunde) {
+	public void artikelInWarenkorb(int artikelnummer, Kunde eingeloggterKunde) throws ArtikelExistiertNichtException {
 				
 		Artikel a = meineArtikel.sucheEindeutigenArtikel(artikelnummer);
 		if(a == null)
@@ -160,7 +161,7 @@ public class EShop {
 		eingeloggterKunde.getWarenkorb().ArtikelHinzufügen(a);
 	}
 	
-	public void anzahlAendernArtikelInWarenkorb(int artikelnummer,int anzahl, Kunde eingeloggterKunde) {
+	public void anzahlAendernArtikelInWarenkorb(int artikelnummer,int anzahl, Kunde eingeloggterKunde)throws ArtikelExistiertNichtException {
 		
 		Artikel a = meineArtikel.sucheEindeutigenArtikel(artikelnummer);
 		if(a == null)
