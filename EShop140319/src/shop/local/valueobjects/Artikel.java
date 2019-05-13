@@ -3,6 +3,8 @@ package shop.local.valueobjects;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import shop.local.domain.exceptions.FalscheBestandsgroesseException;
+
 /**
  * Klasse zur Repr�sentation einzelner Artikel
  * 
@@ -79,11 +81,10 @@ public class Artikel implements Serializable {
 		return ("nr: "+ nummer + " /Titel: " + bezeichnung + " /Bestand: "+ bestand);
 	}
 	
-	public void setBestand(int bestand)
+	public void setBestand(int bestand) throws FalscheBestandsgroesseException
 	{
 		if(bestand < 0) {
-			//TODO: exception werfen, wenn bestand kleiner als 0
-			return;
+			throw new FalscheBestandsgroesseException("Der Bestand darf nicht kleiner als 0 sein!");
 		}
 		this.bestand = bestand;
 	}

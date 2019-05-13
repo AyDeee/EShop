@@ -13,6 +13,7 @@ import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
 import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.FalscheBestandsgroesseException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
@@ -220,6 +221,8 @@ public class ShopClientCUI {
 		int bestand;
 		Artikel artikel;
 		String preisS; //preis String, wird danach in float umgewandelt
+		String packungsgroesseS;
+		int packungsgroesse;
 		float preis;
 		
 		// Eingabe bearbeiten:
@@ -248,9 +251,19 @@ public class ShopClientCUI {
 			System.out.print("preis > ");
 			preisS = liesEingabe();
 			preis = Float.parseFloat(preisS);
+			System.out.print("packungsgroesse > ");
+			packungsgroesseS = liesEingabe();
+			if (!packungsgroesseS.isEmpty()) {
+				packungsgroesse = Integer.parseInt(packungsgroesseS);
+			}
+			
 			
 			try {
+				if (packungsgroesseS.isEmpty()) {
 				shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
+				}else {
+					//massengutartikel
+				}
 				System.out.println("Einfuegen ok");
 			} catch (ArtikelExistiertBereitsException e) {
 				// Hier Fehlerbehandlung...
@@ -284,10 +297,18 @@ public class ShopClientCUI {
 			System.out.print("Bestand > "); 
 			best = liesEingabe(); 
 			bestand = Integer.parseInt(best); 
-			artikel = shop.bestandErhoehen(nr, bestand, mitarbeiter);
-			
-			System.out.println("Der Bestand vom Artikel "+ "'"+ artikel.getBezeichnung() + "'" + " mit der Artikelnummer " + "'"+artikel.getNummer()+"'"+" wurde auf "+artikel.getBestand()+" geaendert.");
-					
+			try {
+				artikel = shop.bestandErhoehen(nr, bestand, mitarbeiter);
+				System.out.println("Der Bestand vom Artikel "+ "'"+
+				artikel.getBezeichnung() + "'" +
+						" mit der Artikelnummer " +
+				"'"+artikel.getNummer()+"'"+
+						" wurde auf "+artikel.getBestand()+
+						" geaendert.");
+				
+			} catch (FalscheBestandsgroesseException be) {
+				System.out.println(be.getMessage());
+			}	
 			break;
 			
 			

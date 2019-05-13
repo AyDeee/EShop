@@ -3,6 +3,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
+import shop.local.domain.exceptions.FalscheBestandsgroesseException;
 import shop.local.domain.exceptions.KundeExistiertBereitsException;
 import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
@@ -84,7 +85,7 @@ public class EShop {
 	}
 	
 	//Methode, die den Bestand eines Artikels erh�ht
-	public Artikel bestandErhoehen(int nr, int bestandserhoehung, Person person) {
+	public Artikel bestandErhoehen(int nr, int bestandserhoehung, Person person) throws FalscheBestandsgroesseException {
 		
 		Artikel richtigerArtikel = meineArtikel.sucheEindeutigenArtikel(nr);
 		
@@ -118,7 +119,9 @@ public class EShop {
 			Artikel artikel = artikelImWarenkorb.getArtikel();
 			if (artikel.getBestand() > artikelImWarenkorb.getAnzahl()) {
 				// Bestandsreduzierung über ArtikelVerwaltung
-				artikel.setBestand(artikel.getBestand() - artikelImWarenkorb.getAnzahl());
+				try {
+					artikel.setBestand(artikel.getBestand() - artikelImWarenkorb.getAnzahl());
+				} catch (FalscheBestandsgroesseException e) {}
 				logbuch.NeuerEintrag(false, kunde, artikel, artikelImWarenkorb.getAnzahl());
 			}
 			else if (artikel.getBestand() == artikelImWarenkorb.getAnzahl())
