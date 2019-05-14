@@ -82,7 +82,15 @@ public class EShop {
 	
 	//Methode zum l�schen eines Artikels
 	public void loescheArtikel(int nummer, Person person) throws ArtikelExistiertNichtException {
-		meineArtikel.loeschen(nummer, person);
+		Artikel art = meineArtikel.gibArtikel(nummer);
+		if (art != null) {
+			meineArtikel.loeschen(nummer, person);
+			
+		}else {
+			throw new ArtikelExistiertNichtException(art);
+		}
+		
+		
 	}
 	
 	//Methode, die den Bestand eines Artikels erh�ht

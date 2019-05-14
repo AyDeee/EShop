@@ -47,6 +47,15 @@ public class ArtikelVerwaltung {
 		}
 	}
 
+	//FUER ARTIKEL LOESCHEN
+	public Artikel gibArtikel(int artNummer) throws ArtikelExistiertNichtException{
+		for(Artikel art: artikelListe) {
+			if(art.getNummer() == artNummer) {
+				return art;
+			}
+		}
+		throw new ArtikelExistiertNichtException(artNummer);
+	}
 	/**
 	 * Methode, die ein Artikel an das Ende der Artikelliste einf�gt.
 	 * 
@@ -64,9 +73,9 @@ public class ArtikelVerwaltung {
 	
 	//Methode zum Loeschen eines Artikels aus dem Bestand. 
 	
-	public void loeschen(int id, Person person) throws ArtikelExistiertNichtException {
+	public void loeschen(int id, Person person) {
 		int index = 0;
-		while(index < artikelListe.size())
+		for(index=0 ; index < artikelListe.size(); index++)
 		{
 			Artikel currentArtikel = artikelListe.get(index);
 			if(currentArtikel.getNummer() == id) {
@@ -74,12 +83,8 @@ public class ArtikelVerwaltung {
 				logbuch.NeuerEintrag(false, person, currentArtikel, currentArtikel.getBestand());
 				return;//funktioniert nur wenn eine id nur einmalig vergeben werden kann
 			}
-			else if (currentArtikel.getNummer() != id) {
-				throw new ArtikelExistiertNichtException(currentArtikel);
-			}
-			else {
-				index++;
-			}
+			//index++;
+
 		}	
 	}
 	
@@ -124,7 +129,7 @@ public class ArtikelVerwaltung {
 	 * @return Artikel aus der Liste
 	 */
 	
-	public Artikel sucheEindeutigenArtikel(int nummer)throws ArtikelExistiertNichtException {
+	public Artikel sucheEindeutigenArtikel(int nummer){
 
 //		for(Artikel currentArtikel: artikelListe)				Variante for each Schleife 
 //		{
@@ -141,13 +146,14 @@ public class ArtikelVerwaltung {
 			if(currentArtikel.getNummer() == nummer) {
 				return currentArtikel;
 			}
-			else if (currentArtikel.getNummer() != nummer) {
-				throw new ArtikelExistiertNichtException(currentArtikel);
+		
+			else {
+				index++;
 			}
-			//index++
 			
 		}
 		return null;
+		
 	}
 	
 	/**

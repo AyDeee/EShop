@@ -659,8 +659,9 @@ public class ShopClientCUI {
 	 * - Eingabe verarbeiten und Ergebnis ausgeben
 	 * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
 	 * @throws MitarbeiterExistiertBereitsException 
+	 * @throws ArtikelExistiertBereitsException 
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
+	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
 		// Variable für Eingaben von der Konsole
 		String input = ""; 
 		if(datenInitialisieren == true)
@@ -672,15 +673,11 @@ public class ShopClientCUI {
 			}catch (MitarbeiterExistiertBereitsException me) {
 				me.printStackTrace();
 			}
-			try {
-				shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
-				shop.fuegeArtikelEin("banane", 13, 100, 1.30f,m); //bei float immer f dahinter
-				shop.fuegeArtikelEin("tisch", 11, 4, 15.0f,m);
+			
+			shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
+			shop.fuegeArtikelEin("banane", 13, 100, 1.30f,m); //bei float immer f dahinter
+			shop.fuegeArtikelEin("tisch", 11, 4, 15.0f,m);
 	
-			} catch (ArtikelExistiertBereitsException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			
 			try {
 				shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
@@ -756,8 +753,9 @@ public class ShopClientCUI {
 	/**
 	 * Die main-Methode...
 	 * @throws MitarbeiterExistiertBereitsException 
+	 * @throws ArtikelExistiertBereitsException 
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException {
+	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();
