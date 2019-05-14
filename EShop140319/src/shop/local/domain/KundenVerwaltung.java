@@ -14,17 +14,14 @@ public class KundenVerwaltung {
 	static final String KUNDENSAVE = "Kunden.save";
 	
 	private Vector <Kunde> kundenListe = new Vector <Kunde>();
-	
 	private PersistenceManager pm;
 	
 	public KundenVerwaltung(PersistenceManager pm) {
 		this.pm = pm;
-		
 		try {
 			liesDaten(KUNDENSAVE);
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Kunden.save fehlt ");
 		}
 	}
 	
@@ -32,8 +29,7 @@ public class KundenVerwaltung {
 		try {
 			schreibeDaten(KUNDENSAVE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Kunden.save fehlt ");
 		}
 	}
 	
@@ -43,8 +39,8 @@ public class KundenVerwaltung {
 		if (kundenListe.contains(einKunde)) {
 			throw new KundeExistiertBereitsException(einKunde, " existiert bereits. Sie koennen sich einloggen.");
 		}
-
 		kundenListe.add(einKunde); 
+		
 	}
 
 		

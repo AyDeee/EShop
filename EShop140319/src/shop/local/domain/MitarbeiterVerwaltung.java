@@ -20,8 +20,7 @@ public class MitarbeiterVerwaltung {
 		try {
 			liesDaten(MITARBEITERSAVE);
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Mitarbeiter.save fehlt ");
 		}
 	}
 	
@@ -29,8 +28,7 @@ public class MitarbeiterVerwaltung {
 		try {
 			schreibeDaten(MITARBEITERSAVE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Mitarbeiter.save fehlt ");
 		}
 	}
 	
@@ -39,11 +37,9 @@ public class MitarbeiterVerwaltung {
 	
 	public void einfuegen(Mitarbeiter einMitarbeiter) throws MitarbeiterExistiertBereitsException {
 		
-		
 		if (mitarbeiterListe.contains(einMitarbeiter)) {
 			throw new MitarbeiterExistiertBereitsException(einMitarbeiter, " existiert bereits. Sie koennen sich einloggen.");
 		}
-
 		mitarbeiterListe.add(einMitarbeiter); //in mitarbeiterListe wird Mitarbeiter hinzugefügt 
 	
 	}
@@ -55,7 +51,7 @@ public class MitarbeiterVerwaltung {
 	}
 
 	
-	//Methode, die pr�ft, ob Passwort und Id korrekt sind und Mitarbeiter zur�ckgibt
+	//Methode, die prueft, ob Passwort und Id korrekt sind und Mitarbeiter zurueckgibt
 	
 	public Mitarbeiter ueberpruefenMitarbeiterLogin (int id, String passwort) {
 		Iterator<Mitarbeiter> it = mitarbeiterListe.iterator();
@@ -70,11 +66,7 @@ public class MitarbeiterVerwaltung {
 		return null;
 	}
 	
-	/**
-	 * Methode zum Schreiben der daten in eine Datei.
-	 * 
-	 * @throws IOException
-	 */
+
 	public void schreibeDaten(String datei) throws IOException {
 		// PersistenzManager f�r Schreibvorg�nge �ffnen
 		pm.openForWriting(datei);

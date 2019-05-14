@@ -3,9 +3,6 @@ package shop.local.valueobjects;
 public class Mitarbeiter extends Person{
 
 
-
-	
-
 	//Konstruktor zum einloggen
 	public Mitarbeiter (int id, String pw) {
 		super(id, pw);
