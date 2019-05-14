@@ -10,6 +10,7 @@ import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.Massengutartikel;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Person;
 import shop.local.valueobjects.Rechnung;
@@ -78,12 +79,18 @@ public class EShop {
 		
 	}
 	
-	//TODO MASSENGUT Varibalen hinzufügen 
+	
+	public Massengutartikel fuegeMassengutArtikelEin(String titel, int nummer, int bestand, float preis, int packungsgroesse,  Person person) throws ArtikelExistiertBereitsException {
+		Massengutartikel einArtikel = new Massengutartikel (titel, nummer, bestand, preis, packungsgroesse);
+		meineArtikel.einfuegen(einArtikel, person);
+		return einArtikel;
+	}
+	
 	//Methode zum Einf�gen eines neuen Artikels in den Bestand.
 	public Artikel fuegeArtikelEin(String titel, int nummer, int bestand, float preis, Person person) throws ArtikelExistiertBereitsException {
-		Artikel b = new Artikel(titel, nummer, bestand, preis);
-		meineArtikel.einfuegen(b, person);
-		return b;
+		Artikel einArtikel = new Artikel(titel, nummer, bestand, preis);
+		meineArtikel.einfuegen(einArtikel, person);
+		return einArtikel;
 	}
 	
 	//Methode zum l�schen eines Artikels

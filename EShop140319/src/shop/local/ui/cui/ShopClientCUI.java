@@ -257,18 +257,15 @@ public class ShopClientCUI {
 			System.out.print("preis > ");
 			preisS = liesEingabe();
 			preis = Float.parseFloat(preisS);
-			System.out.print("packungsgroesse > ");
+			System.out.print("packungsgroesse (Für Einzelartikel Enter klicken) > ");
 			packungsgroesseS = liesEingabe();
-			if (!packungsgroesseS.isEmpty()) {
-				packungsgroesse = Integer.parseInt(packungsgroesseS);
-			}
-			
 			
 			try {
 				if (packungsgroesseS.isEmpty()) {
-				shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
+					shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
 				}else {
-					//massengutartikel
+					packungsgroesse = Integer.parseInt(packungsgroesseS);
+					shop.fuegeMassengutArtikelEin(titel, nr, bestand, preis, packungsgroesse, mitarbeiter);	
 				}
 				System.out.println("Einfuegen ok");
 			} catch (ArtikelExistiertBereitsException e) {
@@ -276,6 +273,8 @@ public class ShopClientCUI {
 				System.out.println("Fehler beim Einfuegen");
 				e.printStackTrace(); //zeigt den genauen Ort wo im Programm die Exception erzeugt wurde
 			}
+			
+			
 			break;
 		case "f":
 			System.out.print("nummer > ");

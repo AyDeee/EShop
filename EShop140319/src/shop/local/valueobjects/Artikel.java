@@ -21,17 +21,14 @@ public class Artikel implements Serializable {
 	private int nummer;
 	protected int bestand; //Klassen die erben können darauf zugreifen
 	private float preis;
-	
-	
 
-
+	
 	public Artikel(String titel, int nr, int bestand, float preis) {
 		nummer = nr;
 		this.bezeichnung = titel;
 		this.bestand = bestand;
 		this.preis = preis;
 	}
-	
 
 	//Konstruktor zum Bestand erh�hen
 	
