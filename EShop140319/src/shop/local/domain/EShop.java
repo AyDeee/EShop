@@ -69,7 +69,13 @@ public class EShop {
 	public Artikel sucheNachNummer(int nummer) throws ArtikelExistiertNichtException {
 		
 		Artikel richtigerArtikel = meineArtikel.sucheEindeutigenArtikel(nummer);
-		return richtigerArtikel;
+		if (richtigerArtikel != null) {
+			return richtigerArtikel;
+			
+		}else {
+			throw new ArtikelExistiertNichtException(richtigerArtikel);
+		}
+		
 	}
 	
 	//TODO MASSENGUT Varibalen hinzufügen 
