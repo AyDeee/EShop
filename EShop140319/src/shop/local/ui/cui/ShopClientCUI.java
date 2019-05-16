@@ -9,7 +9,6 @@ import java.util.Iterator;
 
 import java.util.Vector;
 
-import shop.local.domain.ArtikelVerwaltung;
 import shop.local.domain.EShop;
 import shop.local.domain.Logbuch;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
@@ -20,7 +19,6 @@ import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
-import shop.local.valueobjects.LogbuchEintrag;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Rechnung;
 
@@ -28,7 +26,6 @@ public class ShopClientCUI {
 
 	private EShop shop;
 	private BufferedReader in;
-	private ArtikelVerwaltung artikelVerwaltung;
 	private boolean datenInitialisieren;
 
 	public ShopClientCUI() throws IOException {
@@ -44,7 +41,6 @@ public class ShopClientCUI {
 		// die Shop-Verwaltung erledigt die Aufgaben,
 		// die nichts mit Ein-/Ausgabe zu tun haben
 		shop = new EShop();
-		artikelVerwaltung = shop.getArtikelVerwaltung();
 		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
 		in = new BufferedReader(new InputStreamReader(System.in));
 	}
@@ -121,8 +117,7 @@ public class ShopClientCUI {
 						input = liesEingabe();
 						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Fehlerhafte Eingabe");
 					}
 				} while (!input.equals("q"));
 			} else {
@@ -168,8 +163,7 @@ public class ShopClientCUI {
 						input = liesEingabe();
 						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("Fehlerhafte Eingabe");
 					}
 				} while (!input.equals("q"));
 
@@ -178,7 +172,6 @@ public class ShopClientCUI {
 			break;
 		}
 
-		// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
 		// mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort,
 		// iban, passwort);
 	}
@@ -205,7 +198,7 @@ public class ShopClientCUI {
 	 * Interne (private) Methode zur Verarbeitung von Eingaben und Ausgabe von
 	 * Ergebnissen.
 	 */
-	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException {
+	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) {
 		String nummer;
 		int nr;
 		String titel;
@@ -213,7 +206,6 @@ public class ShopClientCUI {
 		String best;
 		int bestand;
 		Artikel artikel;
-		LogbuchEintrag artikelImLogbuch;
 		String preisS; // preis String, wird danach in float umgewandelt
 		String packungsgroesseS;
 		int packungsgroesse;
@@ -417,10 +409,7 @@ public class ShopClientCUI {
 						input = liesEingabe();
 						verarbeiteEingabeKunde(input, kunde);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ArtikelExistiertNichtException aen) {
-						System.out.println(aen.getMessage());
+						System.out.println("Fehlerhafte Eingabe");
 					}
 				} while (!input.equals("q"));
 			} else {
@@ -468,11 +457,7 @@ public class ShopClientCUI {
 						input = liesEingabe();
 						verarbeiteEingabeKunde(input, kunde);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ArtikelExistiertNichtException aen) {
-						// TODO Auto-generated catch block
-						aen.printStackTrace();
+						System.out.println("Fehlerhafte Eingabe");
 					}
 				} while (!input.equals("q"));
 			}
@@ -499,11 +484,9 @@ public class ShopClientCUI {
 
 	}
 
-	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde)
-			throws IOException, ArtikelExistiertNichtException {
+	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde) {
 		String nummer;
 		int nr;
-		String titel;
 		Vector<Artikel> liste;
 		String best;
 		int bestand;
@@ -516,9 +499,15 @@ public class ShopClientCUI {
 			gibArtikellisteAus(liste);
 			break;
 		case "f":
-			System.out.print("nummer > ");
-			nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
-			nr = Integer.parseInt(nummer);
+			try {
+				System.out.print("nummer > ");
+				nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
+				nr = Integer.parseInt(nummer);
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
+
 			try {
 				artikel = shop.sucheNachNummer(nr);
 				System.out.print(artikel);
@@ -539,9 +528,14 @@ public class ShopClientCUI {
 			break;
 
 		case "we": // fügt nur einen Artikel hinzu
-			System.out.print("Artikelnummer > ");
-			nummer = liesEingabe();
-			nr = Integer.parseInt(nummer);
+			try {
+				System.out.print("Artikelnummer > ");
+				nummer = liesEingabe();
+				nr = Integer.parseInt(nummer);
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 
 			try {
 				artikel = shop.sucheNachNummer(nr);
@@ -560,16 +554,22 @@ public class ShopClientCUI {
 			break;
 
 		case "wa": // fügt Artikel hinzu un man kann direkt die Anzahl angeben/ändern
+			try {
+				System.out.print("Artikelnummer > ");
+				nummer = liesEingabe();
+				nr = Integer.parseInt(nummer);
 
-			System.out.print("Artikelnummer > ");
-			nummer = liesEingabe();
-			nr = Integer.parseInt(nummer);
-
-			System.out.print("Anzahl > ");
-			best = liesEingabe();
-			bestand = Integer.parseInt(best);
-
-			artikel = shop.sucheNachNummer(nr);
+				System.out.print("Anzahl > ");
+				best = liesEingabe();
+				bestand = Integer.parseInt(best);
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
+			
+			try {
+				artikel = shop.sucheNachNummer(nr);
+			
 
 			if (artikel.getBestand() < bestand) {
 				System.out.println("Es sind leider nur noch " + artikel.getBestand() + " Artikel verf�gbar");
@@ -578,7 +578,12 @@ public class ShopClientCUI {
 				while (bestand == 0) {
 					System.out.println("Eingabe war ungueltig, versuche es erneut.");
 					System.out.print("Anzahl > ");
-					best = liesEingabe();
+					try {
+						best = liesEingabe();
+					} catch (IOException e) {				
+						System.out.println("Fehlerhafte Eingabe");
+
+					}
 					bestand = Integer.parseInt(best);
 				}
 				try {
@@ -588,6 +593,9 @@ public class ShopClientCUI {
 					System.out.println(e.getMessage());
 				}
 
+			}
+			} catch (ArtikelExistiertNichtException e1) {
+				System.out.println("Artikel existiert nicht.");
 			}
 			break;
 
@@ -620,9 +628,15 @@ public class ShopClientCUI {
 
 			break;
 		case "k":
-			Rechnung rechnung = shop.kaufeArtikelImWarenkorb(eingeloggterKunde);
+			Rechnung rechnung;
+			try {
+				rechnung = shop.kaufeArtikelImWarenkorb(eingeloggterKunde);
+			
 			String ausgabe = rechnung.Print();
 			System.out.print(ausgabe);
+			} catch (ArtikelExistiertNichtException e) {
+				
+			}
 		}
 
 	}
@@ -705,8 +719,7 @@ public class ShopClientCUI {
 				shop.fuegeArtikelEin("banane", 13, 100, 1.30f, m); // bei float immer f dahinter
 				shop.fuegeArtikelEin("tisch", 11, 4, 15.0f, m);
 
-			} catch (ArtikelExistiertBereitsException | FalscheBestandsgroesseException e) {
-				// TODO Auto-generated catch block
+			} catch (ArtikelExistiertBereitsException | FalscheBestandsgroesseException e) {			
 				e.printStackTrace();
 			}
 
@@ -741,9 +754,8 @@ public class ShopClientCUI {
 					try {
 						input = liesEingabe();
 						verarbeiteEingabeStartMenueMitarbeiter(input);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} catch (IOException e) {				
+						System.out.println("Fehlerhafte Eingabe");
 					}
 
 					// ---------------------Kunde----------------------------------------
@@ -754,9 +766,8 @@ public class ShopClientCUI {
 					try {
 						input = liesEingabe();
 						verarbeiteEingabeStartMenueKunde(input);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					}catch(Exception e) {
+						System.out.println("Fehlerhafte Eingabe");
 					}
 
 					// ---------------------Fehlerhafte Eingabe---------------------------
@@ -766,9 +777,8 @@ public class ShopClientCUI {
 					gibMenueAus();
 					try {
 						input = liesEingabe();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					}catch(Exception e) {
+						System.out.println("Fehlerhafte Eingabe");
 					}
 				}
 			} while (!input.equals("q"));
@@ -790,7 +800,6 @@ public class ShopClientCUI {
 			cui = new ShopClientCUI();
 			cui.run();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
