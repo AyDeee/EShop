@@ -27,8 +27,7 @@ public class Logbuch {
 		try {
 			liesDaten(LOGSAVE);
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Logbuch.save fehlt ");
 		}
 		
 	}
@@ -37,8 +36,7 @@ public class Logbuch {
 		try {
 			schreibeDaten(LOGSAVE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(" Logbuch.save fehlt ");
 		}
 	}
 

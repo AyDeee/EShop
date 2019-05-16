@@ -54,18 +54,19 @@ public class ArtikelVerwaltung {
 				return art;
 			}
 		}
-		throw new ArtikelExistiertNichtException(artNummer);
+		throw new ArtikelExistiertNichtException(artNummer," kann nicht geloescht werden, da er nicht existiert.");
 	}
+	
 	/**
 	 * Methode, die ein Artikel an das Ende der Artikelliste einf�gt.
 	 * 
 	 */
 	public void einfuegen(Artikel einArtikel, Person person) throws ArtikelExistiertBereitsException {
 		if (artikelListe.contains(einArtikel)) { //überprüft ob Nummer schon vergeben
-			throw new ArtikelExistiertBereitsException(einArtikel);
+			throw new ArtikelExistiertBereitsException(einArtikel, " existiert bereits.");
 		}
 
-		// das �bernimmt die ArtikelListe:
+		// das uebernimmt die ArtikelListe:
 		artikelListe.add(einArtikel);
 		logbuch.NeuerEintrag(true, person, einArtikel, einArtikel.getBestand());
 	}

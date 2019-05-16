@@ -18,13 +18,8 @@ import shop.local.valueobjects.Rechnung;
 import shop.local.valueobjects.Warenkorb;
 import shop.local.persistance.PersistenceManager;
 
-
-//KLAPPT DAS JETZT ODER WAS
-
 public class EShop {
-	
 
-	
 	private ArtikelVerwaltung meineArtikel;
 	private MitarbeiterVerwaltung meineMitarbeiter;
 	private KundenVerwaltung meineKunden;
@@ -75,7 +70,7 @@ public class EShop {
 			return richtigerArtikel;
 			
 		}else {
-			throw new ArtikelExistiertNichtException(richtigerArtikel);
+			throw new ArtikelExistiertNichtException(nummer," ist nicht im Eshop.");
 		}
 		
 	}
@@ -112,8 +107,6 @@ public class EShop {
 		if (art != null) {
 			meineArtikel.loeschen(nummer, person);
 			
-		}else {
-			throw new ArtikelExistiertNichtException(art);
 		}
 		
 		
@@ -224,9 +217,10 @@ public class EShop {
 		meineMitarbeiter.einfuegen(m);
 		
 		return m;
-
 		
 	}
+	
+	
 	
 	//Methode die prueft, ob es diesen Mitarbeiter mit der id und diesem Passwort gibt
 	public Mitarbeiter loginUeberpruefungMitarbeiter(int id, String passwort) {
@@ -247,9 +241,12 @@ public class EShop {
 	public Kunde fuegeKundeEin( String name, String str, String nr, String plz, String ort, String iban, String pw) throws KundeExistiertBereitsException {
 		int id = meineKunden.kundenAnzahl();
 		Kunde k = new Kunde(id, name, str, nr, plz, ort, iban, pw);
+		
 		meineKunden.einfuegen(k);
 		
 		return k;
+		
+		
 	}
 
 

@@ -11,7 +11,7 @@ import shop.local.domain.exceptions.FalscheBestandsgroesseException;
  */
 public class Artikel implements Serializable {
 
-	/**
+	/**test
 	 * 
 	 */
 	private static final long serialVersionUID = 3052253964821851636L;

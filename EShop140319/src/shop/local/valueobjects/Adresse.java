@@ -9,6 +9,7 @@ public class Adresse implements Serializable {
 	*/
 	private static final long serialVersionUID = 2655436934395636086L; //Eindeutige id für die Persitenz von jeder Klasse
 
+	
 	private String wohnort;
 	private String plz;
 	private String str;
