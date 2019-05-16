@@ -24,14 +24,6 @@ import shop.local.valueobjects.LogbuchEintrag;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Rechnung;
 
-/**
- * Klasse für sehr einfache Benutzungsschnittstelle für die Bibliothek. Die
- * Benutzungsschnittstelle basiert auf Ein- und Ausgaben auf der Kommandozeile,
- * daher der Name CUI (Command line User Interface).
- * 
- * @author teschke
- * @version 1 (Verwaltung der Buecher in verketteter Liste)
- */
 public class ShopClientCUI {
 
 	private EShop shop;
