@@ -102,13 +102,13 @@ public class EShop {
 	}
 	
 	//Methode zum l�schen eines Artikels
-	public void loescheArtikel(int nummer, Person person) throws ArtikelExistiertNichtException {
+	public Artikel loescheArtikel(int nummer, Person person) throws ArtikelExistiertNichtException {
 		Artikel art = meineArtikel.gibArtikel(nummer);
 		if (art != null) {
 			meineArtikel.loeschen(nummer, person);
 			
 		}
-		
+		return art;
 		
 	}
 	

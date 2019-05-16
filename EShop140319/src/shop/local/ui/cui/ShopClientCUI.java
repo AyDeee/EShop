@@ -85,8 +85,7 @@ public class ShopClientCUI {
 	 */
 
 	// Verarbeitung einloggen oder registrieren -->line = Eingabe
-	private void verarbeiteEingabeStartMenueMitarbeiter(String line)
-			throws IOException, MitarbeiterExistiertBereitsException {
+	private void verarbeiteEingabeStartMenueMitarbeiter(String line) {
 
 		Mitarbeiter mitarbeiter = null;
 		String input = "";
@@ -106,14 +105,19 @@ public class ShopClientCUI {
 
 		switch (line) {
 		case "e":
-			System.out.println("Login:");
-			System.out.println("ID");
-			System.out.print("> ");
-			nr = liesEingabe();
-			id = Integer.parseInt(nr);
-			System.out.println("Passwort");
-			System.out.print("> ");
-			passwort = liesEingabe();
+			try {
+				System.out.println("Login:");
+				System.out.println("ID");
+				System.out.print("> ");
+				nr = liesEingabe();
+				id = Integer.parseInt(nr);
+				System.out.println("Passwort");
+				System.out.print("> ");
+				passwort = liesEingabe();
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 
 			mitarbeiter = shop.loginUeberpruefungMitarbeiter(id, passwort);
 
@@ -135,22 +139,27 @@ public class ShopClientCUI {
 			break;
 
 		case "r":
-			System.out.println("Registrieren:");
-			System.out.println("Name>");
-			name = liesEingabe();
-			System.out.println("Passwort>");
-			passwort = liesEingabe();
-			System.out.println("Strasse>");
-			str = liesEingabe();
-			System.out.println("Hausnummer>");
-			hausnummer = liesEingabe();
-			System.out.println("PLZ>");
-			plz = liesEingabe();
-			System.out.println("Wohnort>");
-			wohnort = liesEingabe();
-			System.out.println("IBAN>");
-			iban = liesEingabe();
+			try {
+				System.out.println("Registrieren:");
+				System.out.println("Name>");
+				name = liesEingabe();
+				System.out.println("Passwort>");
+				passwort = liesEingabe();
+				System.out.println("Strasse>");
+				str = liesEingabe();
+				System.out.println("Hausnummer>");
+				hausnummer = liesEingabe();
+				System.out.println("PLZ>");
+				plz = liesEingabe();
+				System.out.println("Wohnort>");
+				wohnort = liesEingabe();
+				System.out.println("IBAN>");
+				iban = liesEingabe();
 
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 			try {
 				mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
 				System.out.println("Registrieren erfolgreich - Ihre ID: " + mitarbeiter.getId());
@@ -235,7 +244,8 @@ public class ShopClientCUI {
 				break;
 			}
 			try {
-				shop.loescheArtikel(nr, mitarbeiter);
+				Artikel art = shop.loescheArtikel(nr, mitarbeiter);
+				System.out.println(art.getBezeichnung() + " wurde geloescht!");
 			} catch (ArtikelExistiertNichtException aen) {
 				System.out.println(aen.getMessage());
 
@@ -372,7 +382,7 @@ public class ShopClientCUI {
 	 */
 
 	// Registrieren oder einloggen
-	private void verarbeiteEingabeStartMenueKunde(String line) throws IOException, KundeExistiertBereitsException {
+	private void verarbeiteEingabeStartMenueKunde(String line) {
 		Kunde kunde = null;
 		String input = "";
 
@@ -391,15 +401,20 @@ public class ShopClientCUI {
 
 		switch (line) {
 		case "e":
-			System.out.println("Login:");
-			System.out.println("ID");
-			System.out.print("> ");
-			nr = liesEingabe();
-			id = Integer.parseInt(nr);
-			System.out.println("Passwort");
-			System.out.print("> ");
-			passwort = liesEingabe();
+			try {
+				System.out.println("Login:");
+				System.out.println("ID");
+				System.out.print("> ");
+				nr = liesEingabe();
+				id = Integer.parseInt(nr);
+				System.out.println("Passwort");
+				System.out.print("> ");
+				passwort = liesEingabe();
 
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 			kunde = shop.loginUeberpruefungKunde(id, passwort);
 
 			if (kunde != null) {
@@ -422,21 +437,27 @@ public class ShopClientCUI {
 			break;
 
 		case "r":
-			System.out.println("Registrieren:");
-			System.out.println("Name>");
-			name = liesEingabe();
-			System.out.println("Passwort>");
-			passwort = liesEingabe();
-			System.out.println("Strasse>");
-			str = liesEingabe();
-			System.out.println("Hausnummer>");
-			hausnummer = liesEingabe();
-			System.out.println("PLZ>");
-			plz = liesEingabe();
-			System.out.println("Wohnort>");
-			wohnort = liesEingabe();
-			System.out.println("IBAN>");
-			iban = liesEingabe();
+			try {
+				System.out.println("Registrieren:");
+				System.out.println("Name>");
+				name = liesEingabe();
+				System.out.println("Passwort>");
+				passwort = liesEingabe();
+				System.out.println("Strasse>");
+				str = liesEingabe();
+				System.out.println("Hausnummer>");
+				hausnummer = liesEingabe();
+				System.out.println("PLZ>");
+				plz = liesEingabe();
+				System.out.println("Wohnort>");
+				wohnort = liesEingabe();
+				System.out.println("IBAN>");
+				iban = liesEingabe();
+
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 
 			try {
 				kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
@@ -543,7 +564,6 @@ public class ShopClientCUI {
 			// shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
 			// TODO wenn artikel nicht eingef�gt wird, weil nicht mehr verf�gbar, meldung an
 			// den kunden
-			
 
 			break;
 
@@ -575,7 +595,7 @@ public class ShopClientCUI {
 				} catch (FalscheBestandsgroesseException e) {
 					System.out.println(e.getMessage());
 				}
-				
+
 			}
 			break;
 
@@ -675,8 +695,7 @@ public class ShopClientCUI {
 	 * @throws ArtikelExistiertBereitsException
 	 * @throws FalscheBestandsgroesseException
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException,
-			ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
+	public void run() {
 		// Variable für Eingaben von der Konsole
 		String input = "";
 		if (datenInitialisieren == true) {
@@ -689,9 +708,15 @@ public class ShopClientCUI {
 				me.printStackTrace();
 			}
 
-			shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f, m);
-			shop.fuegeArtikelEin("banane", 13, 100, 1.30f, m); // bei float immer f dahinter
-			shop.fuegeArtikelEin("tisch", 11, 4, 15.0f, m);
+			try {
+				shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f, m);
+				shop.fuegeArtikelEin("banane", 13, 100, 1.30f, m); // bei float immer f dahinter
+				shop.fuegeArtikelEin("tisch", 11, 4, 15.0f, m);
+
+			} catch (ArtikelExistiertBereitsException | FalscheBestandsgroesseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			try {
 				shop.fuegeKundeEin("Kunde1", "Baumstr", "6", "12344", "ort", "DE12345675432", "123");
@@ -709,8 +734,8 @@ public class ShopClientCUI {
 			try {
 				input = liesEingabe();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				System.out.println("Fehlerhafte Eingabe");
+				continue;
 			}
 
 			if (input.equals("q")) {
@@ -767,8 +792,7 @@ public class ShopClientCUI {
 	 * @throws ArtikelExistiertBereitsException
 	 * @throws FalscheBestandsgroesseException
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException,
-			ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
+	public static void main(String[] args) {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();
