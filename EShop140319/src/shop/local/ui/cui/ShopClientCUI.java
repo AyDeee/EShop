@@ -20,16 +20,14 @@ import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.LogbuchEintrag;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Rechnung;
 
-
-
 /**
- * Klasse für sehr einfache Benutzungsschnittstelle für die
- * Bibliothek. Die Benutzungsschnittstelle basiert auf Ein-
- * und Ausgaben auf der Kommandozeile, daher der Name CUI
- * (Command line User Interface).
+ * Klasse für sehr einfache Benutzungsschnittstelle für die Bibliothek. Die
+ * Benutzungsschnittstelle basiert auf Ein- und Ausgaben auf der Kommandozeile,
+ * daher der Name CUI (Command line User Interface).
  * 
  * @author teschke
  * @version 1 (Verwaltung der Buecher in verketteter Liste)
@@ -40,70 +38,63 @@ public class ShopClientCUI {
 	private BufferedReader in;
 	private ArtikelVerwaltung artikelVerwaltung;
 	private boolean datenInitialisieren;
-	
+
 	public ShopClientCUI() throws IOException {
 		File f = new File(Logbuch.LOGSAVE);
-		if(f.exists()) { 
-			//wenn mindestens das Logbuch gespeichert wurde, brauchen keine Testdaten erzeigt werden
+		if (f.exists()) {
+			// wenn mindestens das Logbuch gespeichert wurde, brauchen keine Testdaten
+			// erzeigt werden
 			datenInitialisieren = false;
-		}
-		else
-		{
+		} else {
 			datenInitialisieren = true;
 		}
-		
-		// die Shop-Verwaltung erledigt die Aufgaben, 
+
+		// die Shop-Verwaltung erledigt die Aufgaben,
 		// die nichts mit Ein-/Ausgabe zu tun haben
 		shop = new EShop();
 		artikelVerwaltung = shop.getArtikelVerwaltung();
 		// Stream-Objekt fuer Texteingabe ueber Konsolenfenster erzeugen
 		in = new BufferedReader(new InputStreamReader(System.in));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * 
 	 * Interne (private) Methode zum Einlesen von Benutzereingaben.
 	 */
 	private String liesEingabe() throws IOException {
 		// einlesen von Konsole
-		
+
 		return in.readLine();
 	}
-	
-	
-	
-	
+
 	private void gibMenueAus() {
 		System.out.println("Weiter als Mitarbeiter  'm'");
 		System.out.println("Weiter als Kunde 	'k'");
 		System.out.println("Beenden:        	'q'");
 	}
-	
-	
+
 	private void gibStartMenueAus() {
 		System.out.println("einloggen  	'e'");
 		System.out.println("registrieren  	'r'");
 		System.out.println("Beenden:        'q'");
 	}
-	
-	
-	
-/**
- * - - - - - - MITARBEITER - - - - - - - - - 
- */
-	
-	//Verarbeitung einloggen oder registrieren -->line = Eingabe
-	private void verarbeiteEingabeStartMenueMitarbeiter(String line) throws IOException, MitarbeiterExistiertBereitsException {
-		
-		
+
+	/**
+	 * - - - - - - MITARBEITER - - - - - - - - -
+	 */
+
+	// Verarbeitung einloggen oder registrieren -->line = Eingabe
+	private void verarbeiteEingabeStartMenueMitarbeiter(String line)
+			throws IOException, MitarbeiterExistiertBereitsException {
+
 		Mitarbeiter mitarbeiter = null;
 		String input = "";
-		
+
 		// Variablen fuer den Mitarbeiter Login
 		int id;
 		String passwort;
 		String nr;
-		
 
 		// Variablen fuer die Kundenregistrierung
 		String name;
@@ -112,9 +103,8 @@ public class ShopClientCUI {
 		String str;
 		String hausnummer;
 		String iban;
-		
-		
-		switch(line) {
+
+		switch (line) {
 		case "e":
 			System.out.println("Login:");
 			System.out.println("ID");
@@ -126,24 +116,24 @@ public class ShopClientCUI {
 			passwort = liesEingabe();
 
 			mitarbeiter = shop.loginUeberpruefungMitarbeiter(id, passwort);
-			
+
 			if (mitarbeiter != null) {
-				System.out.println("Einloggen erfolgreich - Willkommen "+ mitarbeiter.getName()+"!");
+				System.out.println("Einloggen erfolgreich - Willkommen " + mitarbeiter.getName() + "!");
 				do {
 					gibMitarbeiterMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				} while (!input.equals("q"));
 			} else {
-				System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");	
+				System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");
 			}
 			break;
-			
+
 		case "r":
 			System.out.println("Registrieren:");
 			System.out.println("Name>");
@@ -160,39 +150,39 @@ public class ShopClientCUI {
 			wohnort = liesEingabe();
 			System.out.println("IBAN>");
 			iban = liesEingabe();
-			
+
 			try {
 				mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-				System.out.println("Registrieren erfolgreich - Ihre ID: "+ mitarbeiter.getId());
-			}catch (MitarbeiterExistiertBereitsException me) {
+				System.out.println("Registrieren erfolgreich - Ihre ID: " + mitarbeiter.getId());
+			} catch (MitarbeiterExistiertBereitsException me) {
 				// Hier Fehlerbehandlung...
 				System.out.println(me.getMessage());
-				//me.printStackTrace()
-			} 
-				if (mitarbeiter != null) {
-					do {
-						System.out.println("Willkommen "+ mitarbeiter.getName()+"!");
-						gibMitarbeiterMenueAus();
-						try {
-							input = liesEingabe();
-							verarbeiteEingabeMitarbeiter(input, mitarbeiter);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}while (!input.equals("q"));
-					
-				}
-		
-			break;
+				// me.printStackTrace()
 			}
-			
-			// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
-			//mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-		}
-	
+			if (mitarbeiter != null) {
+				do {
+					System.out.println("Willkommen " + mitarbeiter.getName() + "!");
+					gibMitarbeiterMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeMitarbeiter(input, mitarbeiter);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} while (!input.equals("q"));
 
-	private void gibMitarbeiterMenueAus() {	
+			}
+
+			break;
+		}
+
+		// TODO evtl. PLZ als Int| der Einfachheit halber sind alle Eingaben Strings
+		// mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort,
+		// iban, passwort);
+	}
+
+	private void gibMitarbeiterMenueAus() {
 		System.out.print("Befehle: \n  ---------------------");
 		System.out.print("         \n  Artikel ausgeben:  			'a'");
 		System.out.print("         \n  Artikel loeschen: 			'd'");
@@ -207,25 +197,27 @@ public class ShopClientCUI {
 		System.out.print("> "); // Prompt
 		System.out.flush(); // ohne NL ausgeben
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * Interne (private) Methode zur Verarbeitung von Eingaben
-	 * und Ausgabe von Ergebnissen.
+	 * Interne (private) Methode zur Verarbeitung von Eingaben und Ausgabe von
+	 * Ergebnissen.
 	 */
 	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) throws IOException {
 		String nummer;
 		int nr;
 		String titel;
-		Vector <Artikel> liste;
+		Vector<Artikel> liste;
 		String best;
 		int bestand;
 		Artikel artikel;
-		String preisS; //preis String, wird danach in float umgewandelt
+		LogbuchEintrag artikelImLogbuch;
+		String preisS; // preis String, wird danach in float umgewandelt
 		String packungsgroesseS;
 		int packungsgroesse;
 		float preis;
-		
+
 		// Eingabe bearbeiten:
 		switch (line) {
 		case "a":
@@ -234,52 +226,83 @@ public class ShopClientCUI {
 			break;
 		case "d":
 			// lies die notwendigen Parameter, einzeln pro Zeile
-			System.out.print("nummer > ");
-			nummer = liesEingabe();
-			nr = Integer.parseInt(nummer);			
+			try {
+				System.out.print("nummer > ");
+				nummer = liesEingabe();
+				nr = Integer.parseInt(nummer);
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 			try {
 				shop.loescheArtikel(nr, mitarbeiter);
 			} catch (ArtikelExistiertNichtException aen) {
 				System.out.println(aen.getMessage());
-				
+
 			}
 			break;
 		case "e":
 			// lies die notwendigen Parameter, einzelns pro Zeile
-			System.out.print("nummer > ");
-			nummer = liesEingabe();			//man kann immer nur einen String einlesen und dann zum Int konverten
-			nr = Integer.parseInt(nummer);
-			System.out.print("titel  > ");
-			titel = liesEingabe();
-			System.out.print("bestand > ");
-			best = liesEingabe();
-			bestand = Integer.parseInt(best);
-			System.out.print("preis > ");
-			preisS = liesEingabe();
-			preis = Float.parseFloat(preisS);
-			System.out.print("packungsgroesse (Für Einzelartikel Enter klicken) > ");
-			packungsgroesseS = liesEingabe();
-			
+			try {
+				System.out.print("nummer > ");
+				nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
+				nr = Integer.parseInt(nummer);
+				if (nr < 0) {
+					System.out.println("Die Artikelnummer darf nicht kleiner als 0 sein!");
+					break;
+				}
+
+				System.out.print("titel  > ");
+				titel = liesEingabe();
+				System.out.print("bestand > ");
+				best = liesEingabe();
+				bestand = Integer.parseInt(best);
+				if (bestand < 1) {
+					System.out.println("Der Bestand darf nicht kleiner als 1 sein!");
+					break;
+				}
+
+				System.out.print("preis > ");
+				preisS = liesEingabe();
+				preis = Float.parseFloat(preisS);
+
+				if (preis < 0) {
+					System.out.println("Der Preis darf nicht kleiner als 0 sein!");
+					break;
+				}
+				System.out.print("packungsgroesse (Für Einzelartikel Enter klicken) > ");
+				packungsgroesseS = liesEingabe();
+
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				e.printStackTrace();
+				break;
+			}
 			try {
 				if (packungsgroesseS.isEmpty()) {
 					shop.fuegeArtikelEin(titel, nr, bestand, preis, mitarbeiter);
-				}else {
+				} else {
 					packungsgroesse = Integer.parseInt(packungsgroesseS);
-					shop.fuegeMassengutArtikelEin(titel, nr, bestand, preis, packungsgroesse, mitarbeiter);	
+					shop.fuegeMassengutArtikelEin(titel, nr, bestand, preis, packungsgroesse, mitarbeiter);
 				}
 				System.out.println("Einfuegen ok");
+
 			} catch (ArtikelExistiertBereitsException e) {
-				// Hier Fehlerbehandlung...
 				System.out.println("Fehler beim Einfuegen");
-				e.printStackTrace(); //zeigt den genauen Ort wo im Programm die Exception erzeugt wurde
+			} catch (FalscheBestandsgroesseException be) {
+				System.out.println(be.getMessage());
 			}
-			
-			
 			break;
+
 		case "f":
-			System.out.print("nummer > ");
-			nummer = liesEingabe();			//man kann immer nur einen String einlesen und dann zum Int konverten
-			nr = Integer.parseInt(nummer);
+			try {
+				System.out.print("nummer > ");
+				nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
+				nr = Integer.parseInt(nummer);
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+				break;
+			}
 			try {
 				artikel = shop.sucheNachNummer(nr);
 				System.out.print(artikel);
@@ -288,68 +311,75 @@ public class ShopClientCUI {
 			}
 			break;
 		case "sa":
-			liste = shop.gibAlleArtikel(); //macht Liste von allen Artikeln
+			liste = shop.gibAlleArtikel(); // macht Liste von allen Artikeln
 			gibArtikellisteAlphAus(liste);
-			
-			
+
 			break;
 		case "sn":
 			liste = shop.gibAlleArtikel();
 			gibArtikellisteNumAus(liste);
-			
+
 			break;
-			
-			
+
 		case "b":
-			System.out.print("Nummer  > ");
-			nummer = liesEingabe();
-			nr = Integer.parseInt(nummer);
-			System.out.print("Bestand > "); 
-			best = liesEingabe(); 
-			bestand = Integer.parseInt(best); 
+			try {
+				System.out.print("Nummer  > ");
+				nummer = liesEingabe();
+				nr = Integer.parseInt(nummer);
+				System.out.print("Bestand > ");
+				best = liesEingabe();
+				bestand = Integer.parseInt(best);
+			} catch (Exception e) {
+				System.out.print("Fehlerhafte Eingabe");
+				break;
+			}
 			try {
 				artikel = shop.bestandErhoehen(nr, bestand, mitarbeiter);
-				System.out.println("Der Bestand vom Artikel "+ "'"+
-				artikel.getBezeichnung() + "'" +
-						" mit der Artikelnummer " +
-				"'"+artikel.getNummer()+"'"+
-						" wurde auf "+artikel.getBestand()+
-						" geaendert.");
-				
+				System.out.println("Der Bestand vom Artikel " + "'" + artikel.getBezeichnung() + "'"
+						+ " mit der Artikelnummer " + "'" + artikel.getNummer() + "'" + " wurde auf "
+						+ artikel.getBestand() + " geaendert.");
+
 			} catch (FalscheBestandsgroesseException be) {
 				System.out.println(be.getMessage());
 			} catch (ArtikelExistiertNichtException aen) {
 				System.out.println(aen.getMessage());
-			}	
+			}
 			break;
-			
-			
-		case "l": // Log ausgeben
-		
-			String ausgabe = shop.getLogbuch().Print();
-			System.out.print(ausgabe);
-			break;
-		}
-		
-		
-	}
-	
-	
-	
-/**
- * - - - - - - - - - - KUNDE - - - - -  - - - - - - -
- */
 
-	//Registrieren oder einloggen
-	private void verarbeiteEingabeStartMenueKunde(String line) throws IOException, KundeExistiertBereitsException  {
+		case "l": // Log ausgeben
+			try {
+				System.out.print("Nummer (Klick Enter um alle auzugeben) > ");
+				nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
+
+				if (nummer.isEmpty()) {
+					String ausgabe = shop.getLogbuch().Print();
+					System.out.print(ausgabe);
+				} else {
+					nr = Integer.parseInt(nummer);
+					String ausgabe = shop.getLogbuch().Print(nr);
+					System.out.print(ausgabe);
+				}
+			} catch (Exception e) {
+				System.out.println("Fehlerhafte Eingabe");
+			}
+
+		}
+
+	}
+
+	/**
+	 * - - - - - - - - - - KUNDE - - - - - - - - - - - -
+	 */
+
+	// Registrieren oder einloggen
+	private void verarbeiteEingabeStartMenueKunde(String line) throws IOException, KundeExistiertBereitsException {
 		Kunde kunde = null;
 		String input = "";
-		
+
 		// Variabeln f�r Mitarbeiter Login
 		int id;
 		String passwort;
 		String nr;
-		
 
 		// Variabeln f�r die Kundenregistrierung
 		String name;
@@ -358,9 +388,8 @@ public class ShopClientCUI {
 		String str;
 		String hausnummer;
 		String iban;
-		
-		
-		switch(line) {
+
+		switch (line) {
 		case "e":
 			System.out.println("Login:");
 			System.out.println("ID");
@@ -372,28 +401,26 @@ public class ShopClientCUI {
 			passwort = liesEingabe();
 
 			kunde = shop.loginUeberpruefungKunde(id, passwort);
-			
+
 			if (kunde != null) {
-				System.out.println("Einloggen erfolgreich - Willkommen "+ kunde.getName()+"!");
+				System.out.println("Einloggen erfolgreich - Willkommen " + kunde.getName() + "!");
 				do {
-				gibKundenMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeKunde(input, kunde);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				catch (ArtikelExistiertNichtException aen) {
-					System.out.println(aen.getMessage());
-				}
-			} 
-				while (!input.equals("q"));
+					gibKundenMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeKunde(input, kunde);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ArtikelExistiertNichtException aen) {
+						System.out.println(aen.getMessage());
+					}
+				} while (!input.equals("q"));
 			} else {
-				System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");	
+				System.out.println("Leider waren deine Daten nicht richtig. Versuche es erneut.");
 			}
 			break;
-			
+
 		case "r":
 			System.out.println("Registrieren:");
 			System.out.println("Name>");
@@ -413,15 +440,16 @@ public class ShopClientCUI {
 
 			try {
 				kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-				System.out.println("Registrieren erfolgreich - Ihre ID: "+ kunde.getId()); //IST MOM. DRIN ALS PRUEFUNG FUER MICH
-			}catch (KundeExistiertBereitsException ke) {
+				System.out.println("Registrieren erfolgreich - Ihre ID: " + kunde.getId()); // IST MOM. DRIN ALS
+																							// PRUEFUNG FUER MICH
+			} catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung...
 				System.out.println(ke.getMessage());
-				//me.printStackTrace()
-			} 
+				// me.printStackTrace()
+			}
 			if (kunde != null) {
 				do {
-					System.out.println("Willkommen "+ kunde.getName()+"!");
+					System.out.println("Willkommen " + kunde.getName() + "!");
 					gibKundenMenueAus();
 					try {
 						input = liesEingabe();
@@ -429,26 +457,18 @@ public class ShopClientCUI {
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (ArtikelExistiertNichtException aen) {
+						// TODO Auto-generated catch block
+						aen.printStackTrace();
 					}
-				   catch (ArtikelExistiertNichtException aen) {
-					// TODO Auto-generated catch block
-					aen.printStackTrace();
-				}
-				}while (!input.equals("q"));
+				} while (!input.equals("q"));
 			}
-		
+
 			break;
 		}
-		
+
 	}
 
-	
-
-		
-
-	
-	
-	
 	private void gibKundenMenueAus() {
 		System.out.print("Befehle: \n  Artikel anzeigen:                  'a'");
 		System.out.print("         \n  Artikel alphabetisch sortieren:    'sa'");
@@ -463,19 +483,19 @@ public class ShopClientCUI {
 		System.out.println("         \n  Beenden:        'q'");
 		System.out.print("> "); // Prompt
 		System.out.flush(); // ohne NL ausgeben
-			
-		}
-	
-	
-	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde) throws IOException, ArtikelExistiertNichtException {
+
+	}
+
+	private void verarbeiteEingabeKunde(String line, Kunde eingeloggterKunde)
+			throws IOException, ArtikelExistiertNichtException {
 		String nummer;
 		int nr;
 		String titel;
-		Vector <Artikel> liste;
+		Vector<Artikel> liste;
 		String best;
 		int bestand;
 		Artikel artikel = null;
-		
+
 		// Eingabe bearbeiten:
 		switch (line) {
 		case "a":
@@ -484,7 +504,7 @@ public class ShopClientCUI {
 			break;
 		case "f":
 			System.out.print("nummer > ");
-			nummer = liesEingabe();			//man kann immer nur einen String einlesen und dann zum Int konverten
+			nummer = liesEingabe(); // man kann immer nur einen String einlesen und dann zum Int konverten
 			nr = Integer.parseInt(nummer);
 			try {
 				artikel = shop.sucheNachNummer(nr);
@@ -493,144 +513,144 @@ public class ShopClientCUI {
 				System.out.println(aen.getMessage());
 			}
 			break;
-		
+
 		case "sa":
 			liste = shop.gibAlleArtikel();
 			gibArtikellisteAlphAus(liste);
-			
-			
+
 			break;
 		case "sn":
 			liste = shop.gibAlleArtikel();
 			gibArtikellisteNumAus(liste);
-			
+
 			break;
-			
-		case "we":									// fügt nur einen Artikel hinzu
+
+		case "we": // fügt nur einen Artikel hinzu
 			System.out.print("Artikelnummer > ");
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);
-			
+
 			try {
-				artikel=shop.sucheNachNummer(nr);
-				shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
+				artikel = shop.sucheNachNummer(nr);
+				shop.anzahlAendernArtikelInWarenkorb(nr, 1, eingeloggterKunde);
+				System.out.println("Sie haben den Artikel " + artikel.getBezeichnung() + " erfolgreich eingefuegt");
 			} catch (ArtikelExistiertNichtException aen) {
-				// TODO Auto-generated catch block
-				aen.printStackTrace();
+				System.out.println(aen.getMessage());
+			} catch (FalscheBestandsgroesseException e) {
+				System.out.println(e.getMessage());
 			}
 
-		    //shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
-		  //TODO wenn artikel nicht eingef�gt wird, weil nicht mehr verf�gbar, meldung an den kunden
-			System.out.println("Sie haben den Artikel "+ artikel.getBezeichnung()+ " erfolgreich eingef�gt");
-	
+			// shop.anzahlAendernArtikelInWarenkorb(nr,1, eingeloggterKunde);
+			// TODO wenn artikel nicht eingef�gt wird, weil nicht mehr verf�gbar, meldung an
+			// den kunden
+			
+
 			break;
-			
-		case "wa":									// fügt Artikel hinzu un man kann direkt die Anzahl angeben/ändern
-			
+
+		case "wa": // fügt Artikel hinzu un man kann direkt die Anzahl angeben/ändern
+
 			System.out.print("Artikelnummer > ");
 			nummer = liesEingabe();
 			nr = Integer.parseInt(nummer);
-			
+
 			System.out.print("Anzahl > ");
 			best = liesEingabe();
 			bestand = Integer.parseInt(best);
-			
-			artikel=shop.sucheNachNummer(nr);
-			
-			if (artikel.getBestand()<bestand) {
-				System.out.println("Es sind leider nur noch " + artikel.getBestand() +" Artikel verf�gbar");
+
+			artikel = shop.sucheNachNummer(nr);
+
+			if (artikel.getBestand() < bestand) {
+				System.out.println("Es sind leider nur noch " + artikel.getBestand() + " Artikel verf�gbar");
 				System.out.println("Versuche es erneut");
-			}else {
-			while (bestand==0) {
-				System.out.println("Eingabe war ung�ltig, versuche es erneut.");
-				System.out.print("Anzahl > ");
-				best = liesEingabe();
-				bestand = Integer.parseInt(best);
-			}
-			shop.anzahlAendernArtikelInWarenkorb(nr,bestand, eingeloggterKunde);
-		    System.out.println("Sie haben den Artikel "+ artikel.getBezeichnung()+ " erfolgreich eingef�gt");
+			} else {
+				while (bestand == 0) {
+					System.out.println("Eingabe war ungueltig, versuche es erneut.");
+					System.out.print("Anzahl > ");
+					best = liesEingabe();
+					bestand = Integer.parseInt(best);
+				}
+				try {
+					shop.anzahlAendernArtikelInWarenkorb(nr, bestand, eingeloggterKunde);
+					System.out.println("Sie haben den Artikel " + artikel.getBezeichnung() + " erfolgreich eingefuegt");
+				} catch (FalscheBestandsgroesseException e) {
+					System.out.println(e.getMessage());
+				}
+				
 			}
 			break;
-			
-		case "wl": //Warenkorb leeren
+
+		case "wl": // Warenkorb leeren
 			eingeloggterKunde.getWarenkorb().WarenkorbLeeren();
 			break;
-			
+
 		case "w":
 			System.out.println("Warenkorb:");
 			Vector<ArtikelImWarenkorb> vorhandeneArtikel = eingeloggterKunde.getWarenkorb().getWarenkorbEintraege();
-			
-			Iterator<ArtikelImWarenkorb> it = vorhandeneArtikel.iterator(); //Iterator<ArtikelImWarenkorb> nur für diesen Typ
+
+			Iterator<ArtikelImWarenkorb> it = vorhandeneArtikel.iterator(); // Iterator<ArtikelImWarenkorb> nur für
+																			// diesen Typ
 			int laufendeNummer = 1;
-			
-//			if(!it.hasNext()) {
-//				System.out.print("Dein Warenkorb ist leer!");
-//			}
-			
-			if(vorhandeneArtikel.size() == 0) {
+
+			// if(!it.hasNext()) {
+			// System.out.print("Dein Warenkorb ist leer!");
+			// }
+
+			if (vorhandeneArtikel.size() == 0) {
 				System.out.print("Dein Warenkorb ist leer!");
 			}
-			
+
 			while (it.hasNext()) {
 				ArtikelImWarenkorb aktuellerArtikel = it.next();
-				System.out.println(laufendeNummer + ". " + aktuellerArtikel.getArtikel().getBezeichnung() + " , " + aktuellerArtikel.getAnzahl());
+				System.out.println(laufendeNummer + ". " + aktuellerArtikel.getArtikel().getBezeichnung() + " , "
+						+ aktuellerArtikel.getAnzahl());
 				laufendeNummer++;
 			}
-	
+
 			break;
-		case "k": 
+		case "k":
 			Rechnung rechnung = shop.kaufeArtikelImWarenkorb(eingeloggterKunde);
 			String ausgabe = rechnung.Print();
 			System.out.print(ausgabe);
 		}
 
-			
-		}
+	}
 
-	
+	/**
+	 * - - - - - - - - - - ARTIKEL - - - - - - - - - - - -
+	 */
 
-	
-	
-	
-/**
- * - - - - - - - - - - ARTIKEL  - - - - - - - - - - - -
- */
-
-	/* 
+	/*
 	 * Interne (private) Methode zum Ausgeben der Artikelliste
 	 */
-	private void gibArtikellisteAus(Vector <Artikel> liste) {
-		
+	private void gibArtikellisteAus(Vector<Artikel> liste) {
+
 		if (liste.isEmpty()) {
 			System.out.println("Liste ist leer.");
 		} else {
-			Iterator <Artikel> it = liste.iterator();
+			Iterator<Artikel> it = liste.iterator();
 			while (it.hasNext()) {
 				Artikel artikel = (Artikel) it.next();
-				
+
 				System.out.println(artikel);
 			}
 		}
 	}
-	
-	
-	private void gibArtikellisteAlphAus(Vector <Artikel> liste) {
+
+	private void gibArtikellisteAlphAus(Vector<Artikel> liste) {
 		if (liste.isEmpty()) {
 			System.out.println("Liste ist leer.");
 		} else {
 			liste.sort(Artikel.ArtikelNameComparator);
-			Iterator <Artikel> it = liste.iterator();
+			Iterator<Artikel> it = liste.iterator();
 			while (it.hasNext()) {
 				Artikel artikel = (Artikel) it.next();
-				
+
 				System.out.println(artikel);
 			}
 		}
 
-
 	}
-	
-	
+
 	private void gibArtikellisteNumAus(Vector<Artikel> liste) {
 		if (liste.isEmpty()) {
 			System.out.println("Liste ist leer.");
@@ -639,122 +659,116 @@ public class ShopClientCUI {
 			Iterator<Artikel> it = liste.iterator();
 			while (it.hasNext()) {
 				Artikel artikel = (Artikel) it.next();
-				
+
 				System.out.println(artikel);
 			}
 		}
 
-
 	}
-	
-	
-	
-	
 
 	/**
-	 * Methode zur Ausführung der Hauptschleife:
-	 * - Menü ausgeben
-	 * - Eingabe des Benutzers einlesen
-	 * - Eingabe verarbeiten und Ergebnis ausgeben
-	 * (EVA-Prinzip: Eingabe-Verarbeitung-Ausgabe)
-	 * @throws MitarbeiterExistiertBereitsException 
-	 * @throws ArtikelExistiertBereitsException 
+	 * Methode zur Ausführung der Hauptschleife: - Menü ausgeben - Eingabe des
+	 * Benutzers einlesen - Eingabe verarbeiten und Ergebnis ausgeben (EVA-Prinzip:
+	 * Eingabe-Verarbeitung-Ausgabe)
+	 * 
+	 * @throws MitarbeiterExistiertBereitsException
+	 * @throws ArtikelExistiertBereitsException
+	 * @throws FalscheBestandsgroesseException
 	 */
-	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
+	public void run() throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException,
+			ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
 		// Variable für Eingaben von der Konsole
-		String input = ""; 
-		if(datenInitialisieren == true)
-		{
+		String input = "";
+		if (datenInitialisieren == true) {
 			Mitarbeiter m = null;
 			try {
-				m = shop.fuegeMitarbeiterEin("klaus","musterstrasse","3","12345","musterstadt","DE2345678764544","123");
-				shop.fuegeMitarbeiterEin("sarah","musteralle","5","15675","musterdorf","DE2345678764544","123");
-			}catch (MitarbeiterExistiertBereitsException me) {
+				m = shop.fuegeMitarbeiterEin("klaus", "musterstrasse", "3", "12345", "musterstadt", "DE2345678764544",
+						"123");
+				shop.fuegeMitarbeiterEin("sarah", "musteralle", "5", "15675", "musterdorf", "DE2345678764544", "123");
+			} catch (MitarbeiterExistiertBereitsException me) {
 				me.printStackTrace();
 			}
-			
-			shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f,m);
-			shop.fuegeArtikelEin("banane", 13, 100, 1.30f,m); //bei float immer f dahinter
-			shop.fuegeArtikelEin("tisch", 11, 4, 15.0f,m);
-	
-			
+
+			shop.fuegeArtikelEin("stuhl", 12, 1, 10.0f, m);
+			shop.fuegeArtikelEin("banane", 13, 100, 1.30f, m); // bei float immer f dahinter
+			shop.fuegeArtikelEin("tisch", 11, 4, 15.0f, m);
+
 			try {
-				shop.fuegeKundeEin("Kunde1", "Baumstr"	, "6","12344","ort", "DE12345675432", "123");
-				shop.fuegeKundeEin("Kunde2", "strasse"	, "1","12344","ort", "DE12345675432", "123");
-				shop.fuegeKundeEin("Kunde3", "strasse"	, "1","12344","ort", "DE12345675432", "123");
-			}catch (KundeExistiertBereitsException ke) {
+				shop.fuegeKundeEin("Kunde1", "Baumstr", "6", "12344", "ort", "DE12345675432", "123");
+				shop.fuegeKundeEin("Kunde2", "strasse", "1", "12344", "ort", "DE12345675432", "123");
+				shop.fuegeKundeEin("Kunde3", "strasse", "1", "12344", "ort", "DE12345675432", "123");
+			} catch (KundeExistiertBereitsException ke) {
 				ke.printStackTrace();
 			}
-			
-		}
-		
 
-		while(true) {
-			
-		
-		gibMenueAus();
-		try {
-			input=liesEingabe();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
-		
-		if (input.equals("q"))
-		{
-			break;
-		}
-		
-		//---------------------Mitarbeiter----------------------------------
-		do {
-			if (input.equals("m")){ //wenn die Eingabe == m dann öffnet sich das Startmenü (regis oder login)
-				gibStartMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeStartMenueMitarbeiter(input);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-		//---------------------Kunde----------------------------------------
-				
-			}else if(input.equals("k")) {
-				
-				gibStartMenueAus();
-				try {
-					input = liesEingabe();
-					verarbeiteEingabeStartMenueKunde(input);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	
-		//---------------------Fehlerhafte Eingabe---------------------------		
 
-			}else {
-				System.out.println("Eingabe nicht erkannt, versuche es erneut");
-				gibMenueAus();
-				try {
-					input=liesEingabe();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		while (true) {
+
+			gibMenueAus();
+			try {
+				input = liesEingabe();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		}while (!input.equals("q"));
-		
+
+			if (input.equals("q")) {
+				break;
+			}
+
+			// ---------------------Mitarbeiter----------------------------------
+			do {
+				if (input.equals("m")) { // wenn die Eingabe == m dann öffnet sich das Startmenü (regis oder login)
+					gibStartMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeStartMenueMitarbeiter(input);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					// ---------------------Kunde----------------------------------------
+
+				} else if (input.equals("k")) {
+
+					gibStartMenueAus();
+					try {
+						input = liesEingabe();
+						verarbeiteEingabeStartMenueKunde(input);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					// ---------------------Fehlerhafte Eingabe---------------------------
+
+				} else {
+					System.out.println("Eingabe nicht erkannt, versuche es erneut");
+					gibMenueAus();
+					try {
+						input = liesEingabe();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			} while (!input.equals("q"));
+
 		}
 		shop.Save();
 	}
-		
 
 	/**
 	 * Die main-Methode...
-	 * @throws MitarbeiterExistiertBereitsException 
-	 * @throws ArtikelExistiertBereitsException 
+	 * 
+	 * @throws MitarbeiterExistiertBereitsException
+	 * @throws ArtikelExistiertBereitsException
+	 * @throws FalscheBestandsgroesseException
 	 */
-	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException, ArtikelExistiertBereitsException {
+	public static void main(String[] args) throws MitarbeiterExistiertBereitsException, KundeExistiertBereitsException,
+			ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
 		ShopClientCUI cui;
 		try {
 			cui = new ShopClientCUI();

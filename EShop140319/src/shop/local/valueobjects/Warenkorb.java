@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Vector;
 
+import shop.local.domain.exceptions.FalscheBestandsgroesseException;
+
 public class Warenkorb implements Serializable {
 
 	/**
@@ -35,9 +37,18 @@ public class Warenkorb implements Serializable {
 		warenkorbEintraege.add(new ArtikelImWarenkorb(neuerArtikel));
 	}
 
-	public void ArtikelAnzahlAendern(Artikel artikel, int anzahl) {
+	public void ArtikelAnzahlAendern(Artikel artikel, int anzahl) throws FalscheBestandsgroesseException {
 		if (artikel.getBestand() < anzahl) {
 			return;
+		}
+
+		// ((Massengutartikel)artikel) ist notwendig, um den datentyp der variablen auf Massengutartikel umzuwandeln
+		if (artikel instanceof Massengutartikel) {
+			if (!((Massengutartikel) artikel).ueberpruefeAnzahl(anzahl)) {
+				throw new FalscheBestandsgroesseException(
+						"Es handelt sich um ein Massengutartikel. Anzahl muss ein vielfaches von "
+								+ ((Massengutartikel) artikel).getPackungsgroesse() + ".");
+			}
 		}
 
 		Iterator<ArtikelImWarenkorb> it = warenkorbEintraege.iterator(); // gucken ob Artikel im Warenkorb

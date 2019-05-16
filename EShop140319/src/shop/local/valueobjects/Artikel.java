@@ -17,17 +17,21 @@ public class Artikel implements Serializable {
 	private static final long serialVersionUID = 3052253964821851636L;
 	
 	// Attribute zur Beschreibung eines Artikels:
-	private String bezeichnung;
-	private int nummer;
+	protected String bezeichnung;
+	protected int nummer;
 	protected int bestand; //Klassen die erben können darauf zugreifen
-	private float preis;
+	protected float preis;
 
 	
-	public Artikel(String titel, int nr, int bestand, float preis) {
+	public Artikel(String titel, int nr, int bestand, float preis) throws FalscheBestandsgroesseException {
 		nummer = nr;
 		this.bezeichnung = titel;
-		this.bestand = bestand;
+		//this.bestand = bestand;
+		setBestand(bestand);
 		this.preis = preis;
+	}
+	
+	protected Artikel(){
 	}
 
 	//Konstruktor zum Bestand erh�hen

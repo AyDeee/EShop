@@ -17,10 +17,12 @@ public class Logbuch {
 	
 	private Vector<LogbuchEintrag> eintraege;
 	private PersistenceManager pm;
+	private LogbuchEintrag artikelImLogbuch;
 	
 	public Logbuch(PersistenceManager pm) {
 		this.pm = pm;
 		this.eintraege =new Vector<LogbuchEintrag>();
+		this.artikelImLogbuch = artikelImLogbuch;
 		
 		try {
 			liesDaten(LOGSAVE);
@@ -47,9 +49,24 @@ public class Logbuch {
 		eintraege.add(eintrag);
 	}
 	
+	public LogbuchEintrag sucheEindeutigenArtikel(int nummer){
+
+		for(LogbuchEintrag eintrag : eintraege){
+			if(eintrag.getArtikel().getNummer() == nummer) {
+				return eintrag;
+			}
+		}
+		
+		return null;	
+	}
 	
-	public String Print()//Klasse um String zusammen zu bauen
+	public String Print() {
+		return Print(-1);
+	}
+	
+	public String Print(int nummer)//Klasse um String zusammen zu bauen
 	{
+		int datum = EShop.getDayOfYear();
 		StringBuilder builder = new StringBuilder(); //builder Objekt wird erstellt
 		builder.append("----Log----" + System.lineSeparator()); //System.lineSeparator() Zeichen
 		
@@ -58,6 +75,16 @@ public class Logbuch {
 //		}
 		
 		for (LogbuchEintrag eintrag : eintraege) { // Die beiden oberen Zeilen machen genau das Gleiche wie diese eine Zeile
+			
+			if(nummer != -1) {
+				if(eintrag.getArtikel().getNummer() != nummer) {
+					continue;						// mit continue springt man zum Ende der Schleife
+				}
+				
+				if (datum - 30 > eintrag.getDatum()) {
+					continue;
+				}	
+			}
 			
 			builder.append(eintrag.getDatum() + " ");
 			if (eintrag.isEinlagern() == true) //isEingelagert ist der Getter von Einlagern
@@ -87,6 +114,7 @@ public class Logbuch {
 		return builder.toString(); // toString lässt die einzelnen Zeichenketten zusammen ausgeben 
 	}
 	
+	
 	public void schreibeDaten(String datei) throws IOException {
 		// PersistenzManager f�r Schreibvorg�nge �ffnen
 		pm.openForWriting(datei);
@@ -100,7 +128,6 @@ public class Logbuch {
 		pm.close();
 	}
 
-	
 	public void liesDaten(String datei) throws IOException, ClassNotFoundException {
 		// PersistenzManager f�r Lesevorg�nge �ffnen
 		try {

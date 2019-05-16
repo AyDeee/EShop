@@ -10,6 +10,7 @@ import shop.local.domain.exceptions.MitarbeiterExistiertBereitsException;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.LogbuchEintrag;
 import shop.local.valueobjects.Massengutartikel;
 import shop.local.valueobjects.Mitarbeiter;
 import shop.local.valueobjects.Person;
@@ -79,15 +80,27 @@ public class EShop {
 		
 	}
 	
+	public LogbuchEintrag sucheNachNummerImLogbuch(int nummer) throws ArtikelExistiertNichtException {
+		
+		LogbuchEintrag richtigerArtikel = logbuch.sucheEindeutigenArtikel(nummer);
+		if (richtigerArtikel != null) {
+			return richtigerArtikel;
+			
+		}else {
+			throw new ArtikelExistiertNichtException("Artikel ist nicht im Logbuch");
+		}
+		
+	}
 	
-	public Massengutartikel fuegeMassengutArtikelEin(String titel, int nummer, int bestand, float preis, int packungsgroesse,  Person person) throws ArtikelExistiertBereitsException {
+	
+	public Massengutartikel fuegeMassengutArtikelEin(String titel, int nummer, int bestand, float preis, int packungsgroesse,  Person person) throws ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
 		Massengutartikel einArtikel = new Massengutartikel (titel, nummer, bestand, preis, packungsgroesse);
 		meineArtikel.einfuegen(einArtikel, person);
 		return einArtikel;
 	}
 	
 	//Methode zum Einf�gen eines neuen Artikels in den Bestand.
-	public Artikel fuegeArtikelEin(String titel, int nummer, int bestand, float preis, Person person) throws ArtikelExistiertBereitsException {
+	public Artikel fuegeArtikelEin(String titel, int nummer, int bestand, float preis, Person person) throws ArtikelExistiertBereitsException, FalscheBestandsgroesseException {
 		Artikel einArtikel = new Artikel(titel, nummer, bestand, preis);
 		meineArtikel.einfuegen(einArtikel, person);
 		return einArtikel;
@@ -182,7 +195,7 @@ public class EShop {
 		eingeloggterKunde.getWarenkorb().ArtikelHinzufügen(a);
 	}
 	
-	public void anzahlAendernArtikelInWarenkorb(int artikelnummer,int anzahl, Kunde eingeloggterKunde)throws ArtikelExistiertNichtException {
+	public void anzahlAendernArtikelInWarenkorb(int artikelnummer,int anzahl, Kunde eingeloggterKunde)throws ArtikelExistiertNichtException, FalscheBestandsgroesseException {
 		
 		Artikel a = meineArtikel.sucheEindeutigenArtikel(artikelnummer);
 		if(a == null)

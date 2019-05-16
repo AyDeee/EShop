@@ -11,6 +11,10 @@ public class ArtikelExistiertNichtException extends Exception {
 	public ArtikelExistiertNichtException (Artikel artikel) {
 		super("Artikel existiert nicht.");
 	}
+	
+	public ArtikelExistiertNichtException (String nachricht) {
+		super(nachricht);
+	}
 }
 
 
