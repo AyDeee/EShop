@@ -79,7 +79,7 @@ public class Artikel implements Serializable {
 	}
 	
 	public String toString() { //was ist das für ein Artikel
-		return ("nr: "+ nummer + " /Titel: " + bezeichnung + " /Bestand: "+ bestand);
+		return ("nr: "+ nummer + " /Titel: " + bezeichnung + " /Bestand: "+ bestand + " /Preis: "+ preis + " €");
 	}
 	
 	public void setBestand(int bestand) throws FalscheBestandsgroesseException
