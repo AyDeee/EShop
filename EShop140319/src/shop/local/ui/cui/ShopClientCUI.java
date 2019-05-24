@@ -45,11 +45,6 @@ public class ShopClientCUI {
 		in = new BufferedReader(new InputStreamReader(System.in));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * Interne (private) Methode zum Einlesen von Benutzereingaben.
-	 */
 	private String liesEingabe() throws IOException {
 		// einlesen von Konsole
 
@@ -151,7 +146,7 @@ public class ShopClientCUI {
 				mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort, iban, passwort);
 				System.out.println("Registrieren erfolgreich - Ihre ID: " + mitarbeiter.getId());
 			} catch (MitarbeiterExistiertBereitsException me) {
-				// Hier Fehlerbehandlung...
+				// Hier Fehlerbehandlung
 				System.out.println(me.getMessage());
 				// me.printStackTrace()
 			}
@@ -171,9 +166,6 @@ public class ShopClientCUI {
 
 			break;
 		}
-
-		// mitarbeiter = shop.fuegeMitarbeiterEin(name, str, hausnummer, plz, wohnort,
-		// iban, passwort);
 	}
 
 	private void gibMitarbeiterMenueAus() {
@@ -192,12 +184,6 @@ public class ShopClientCUI {
 		System.out.flush(); // ohne NL ausgeben
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * Interne (private) Methode zur Verarbeitung von Eingaben und Ausgabe von
-	 * Ergebnissen.
-	 */
 	private void verarbeiteEingabeMitarbeiter(String line, Mitarbeiter mitarbeiter) {
 		String nummer;
 		int nr;
@@ -370,12 +356,12 @@ public class ShopClientCUI {
 		Kunde kunde = null;
 		String input = "";
 
-		// Variabeln f�r Mitarbeiter Login
+		// Variabeln fuer Mitarbeiter Login
 		int id;
 		String passwort;
 		String nr;
 
-		// Variabeln f�r die Kundenregistrierung
+		// Variabeln fuer Kundenregistrierung
 		String name;
 		String wohnort;
 		String plz;
@@ -442,10 +428,9 @@ public class ShopClientCUI {
 
 			try {
 				kunde = shop.fuegeKundeEin(name, str, hausnummer, plz, wohnort, iban, passwort);
-				System.out.println("Registrieren erfolgreich - Ihre ID: " + kunde.getId()); // IST MOM. DRIN ALS
-																							// PRUEFUNG FUER MICH
-			} catch (KundeExistiertBereitsException ke) {
-				// Hier Fehlerbehandlung...
+				System.out.println("Registrieren erfolgreich - Ihre ID: " + kunde.getId()); 
+			} catch (KundeExistiertBereitsException ke) { 
+				//KUNDE EXISTIERT BEREITS RAUS NEHMEN? 
 				System.out.println(ke.getMessage());
 				// me.printStackTrace()
 			}
