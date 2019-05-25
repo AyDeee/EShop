@@ -1,52 +1,63 @@
 package shop.local.ui.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import net.miginfocom.swing.MigLayout;
+import shop.local.domain.EShop;
 
 public class ShopClientGUI {
-	public ShopClientGUI () {
-		
-		JFrame mainwindow = new JFrame();
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new MigLayout("","[10:80:120]","40!"));
-			
-		JLabel label = new JLabel("Vorgang fortsetzen?");
-		JButton okButton = new JButton("ok");
-		okButton.addActionListener(new ActionListener()
-		{
-			  public void actionPerformed(ActionEvent e)
-			  {
-			    // display/center the jdialog when the button is pressed
-			    JDialog d = new JDialog(mainwindow, "Hello", true);
-			    d.setLocationRelativeTo(mainwindow);
-			    d.setVisible(true);
-			  }
-			});
-		
-		JButton ok2Button = new JButton("abort");
-		JButton ok3Button = new JButton("cancel");
-			
-		mainPanel.add(label, "span, align center, wrap");	
-		mainPanel.add(okButton);
-		mainPanel.add(ok2Button);
-		mainPanel.add(ok3Button);
 
-		mainwindow.add(mainPanel);
+	EShop shop;
+	
+	ArtikelListe liste;
+	LoginScreen login;
+
+	Screen currentScreen;
+	JFrame mainwindow;
+
+	public ShopClientGUI() {
+
+		shop = new EShop();
+		
+		mainwindow = new JFrame();
+
+		InitializeScreens();
+
+		currentScreen = liste;
+		mainwindow.add(currentScreen.GetPanel());
 		mainwindow.pack();
+		mainwindow.setSize(new Dimension(800, 600));
 		mainwindow.setVisible(true);
 		mainwindow.setLocationRelativeTo(null);
 	}
+
+	private void InitializeScreens() {
+		liste = new ArtikelListe(this);
+		login = new LoginScreen(this);
+	}
+
+	public void ChangeScreen(int screenId) {
+		Dimension size = mainwindow.getSize();
+		mainwindow.remove(currentScreen.GetPanel());
+
+		switch (screenId) {
+		case 0:
+			mainwindow.add(liste.GetPanel());
+		case 1:
+			mainwindow.add(login.GetPanel());
+		default:
+		}
+		mainwindow.pack();
+		mainwindow.setSize(size);
+	}
+
+	public EShop GetShop() {
+		return shop;
+	}
 	
-	public static void main(String[]args) {
-		
+	public static void main(String[] args) {
+
 		ShopClientGUI GUI = new ShopClientGUI();
 	}
+
+
 }
