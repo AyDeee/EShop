@@ -185,7 +185,7 @@ public class EShop {
 		{
 			return;
 		}
-		eingeloggterKunde.getWarenkorb().ArtikelHinzufügen(a);
+		eingeloggterKunde.getWarenkorb().ArtikelHinzufuegen(a);
 	}
 	
 	public void anzahlAendernArtikelInWarenkorb(int artikelnummer,int anzahl, Kunde eingeloggterKunde)throws ArtikelExistiertNichtException, FalscheBestandsgroesseException {

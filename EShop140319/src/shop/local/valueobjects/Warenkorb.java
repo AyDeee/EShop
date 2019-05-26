@@ -24,7 +24,7 @@ public class Warenkorb implements Serializable {
 		return new Vector<ArtikelImWarenkorb>(warenkorbEintraege);
 	}
 
-	public void ArtikelHinzufügen(Artikel neuerArtikel) {
+	public void ArtikelHinzufuegen(Artikel neuerArtikel) {
 		Iterator<ArtikelImWarenkorb> it = warenkorbEintraege.iterator();
 		while (it.hasNext()) {
 			ArtikelImWarenkorb artikelImWarenkorb = it.next();
