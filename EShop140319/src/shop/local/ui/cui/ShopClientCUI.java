@@ -255,7 +255,6 @@ public class ShopClientCUI {
 
 			} catch (Exception e) {
 				System.out.println("Fehlerhafte Eingabe");
-				e.printStackTrace();
 				break;
 			}
 			try {
