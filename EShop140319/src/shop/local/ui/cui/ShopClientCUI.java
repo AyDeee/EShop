@@ -758,7 +758,7 @@ public class ShopClientCUI {
 					// ---------------------Fehlerhafte Eingabe---------------------------
 
 				} else {
-					System.out.println("Eingabe nicht erkannt, versuche es erneut");
+					System.out.println("");
 					gibMenueAus();
 					try {
 						input = liesEingabe();
