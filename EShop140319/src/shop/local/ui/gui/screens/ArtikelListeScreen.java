@@ -26,7 +26,7 @@ public class ArtikelListeScreen extends Screen {
 	@Override
 	protected void InitializePanel() {
 		// Layout des Frames: BorderLayout
-		this.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 
 		liste = new ArtikelListe(Shop().gibAlleArtikel());
 		JScrollPane scrollPane = new JScrollPane(liste);
@@ -37,7 +37,7 @@ public class ArtikelListeScreen extends Screen {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.ChangeScreen(1);
+				gui.ChangeScreen(ScreenState.Login);
 			}
 		});
 

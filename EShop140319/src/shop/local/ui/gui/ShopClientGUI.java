@@ -6,9 +6,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import shop.local.domain.EShop;
-import shop.local.ui.gui.screens.ArtikelListeScreen;
-import shop.local.ui.gui.screens.LoginScreen;
-import shop.local.ui.gui.screens.Screen;
+import shop.local.ui.gui.screens.*;
 
 public class ShopClientGUI extends JFrame {
 
@@ -16,42 +14,56 @@ public class ShopClientGUI extends JFrame {
 
 	ArtikelListeScreen liste;
 	LoginScreen login;
-
-	Screen currentScreen;
+	MitarbeiterScreen mitarbeiter;
+	KundenScreen kunde;
 
 	public ShopClientGUI() {
 
 		shop = new EShop();
 		setLayout(new BorderLayout());
-		
+
 		InitializeScreens();
 
-		currentScreen = liste;
-		add(currentScreen, BorderLayout.CENTER);
+		ChangeScreen(ScreenState.Startup);
 		setSize(640, 480);
 		setVisible(true);
 		setLocationRelativeTo(null);
 	}
 
-	private void InitializeScreens() {		
+	private void InitializeScreens() {
 		liste = new ArtikelListeScreen(this);
 		login = new LoginScreen(this);
+		mitarbeiter = new MitarbeiterScreen(this);
+		kunde = new KundenScreen(this);
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
-	public void ChangeScreen(int screenId) {
-		remove(currentScreen);
+	public void ChangeScreen(ScreenState newState) {
+		remove(liste);
+		remove(login);
+		remove(kunde);
+		remove(mitarbeiter);
 
-		switch (screenId) {
-		case 0:
+		switch (newState) {
+		case Kunde:
 			add(liste, BorderLayout.CENTER);
-		case 1:
+			add(kunde, BorderLayout.EAST);
+			break;
+		case Login:
 			add(login, BorderLayout.CENTER);
+			break;
+		case Mitarbeiter:
+			add(liste, BorderLayout.CENTER);
+			add(mitarbeiter, BorderLayout.EAST);
+			break;
+		case Startup:
+			add(liste, BorderLayout.CENTER);
+			break;
 		default:
+			break;
 		}
 
-		
 		SwingUtilities.updateComponentTreeUI(this);
 		invalidate();
 		validate();

@@ -25,7 +25,7 @@ public class LoginScreen extends Screen {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.ChangeScreen(0);
+				gui.ChangeScreen(ScreenState.Kunde);
 			}
 		});
 		add(button, BorderLayout.SOUTH);
