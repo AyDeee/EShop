@@ -1,63 +1,70 @@
 package shop.local.ui.gui;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import shop.local.domain.EShop;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
-public class ShopClientGUI {
+import shop.local.domain.EShop;
+import shop.local.ui.gui.screens.ArtikelListeScreen;
+import shop.local.ui.gui.screens.LoginScreen;
+import shop.local.ui.gui.screens.Screen;
+
+public class ShopClientGUI extends JFrame {
 
 	EShop shop;
-	
-	ArtikelListe liste;
+
+	ArtikelListeScreen liste;
 	LoginScreen login;
 
 	Screen currentScreen;
-	JFrame mainwindow;
 
 	public ShopClientGUI() {
 
 		shop = new EShop();
+		setLayout(new BorderLayout());
 		
-		mainwindow = new JFrame();
-
 		InitializeScreens();
 
 		currentScreen = liste;
-		mainwindow.add(currentScreen.GetPanel());
-		mainwindow.pack();
-		mainwindow.setSize(new Dimension(800, 600));
-		mainwindow.setVisible(true);
-		mainwindow.setLocationRelativeTo(null);
+		add(currentScreen, BorderLayout.CENTER);
+		setSize(640, 480);
+		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
-	private void InitializeScreens() {
-		liste = new ArtikelListe(this);
+	private void InitializeScreens() {		
+		liste = new ArtikelListeScreen(this);
 		login = new LoginScreen(this);
+		
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 
 	public void ChangeScreen(int screenId) {
-		Dimension size = mainwindow.getSize();
-		mainwindow.remove(currentScreen.GetPanel());
+		remove(currentScreen);
 
 		switch (screenId) {
 		case 0:
-			mainwindow.add(liste.GetPanel());
+			add(liste, BorderLayout.CENTER);
 		case 1:
-			mainwindow.add(login.GetPanel());
+			add(login, BorderLayout.CENTER);
 		default:
 		}
-		mainwindow.pack();
-		mainwindow.setSize(size);
+
+		
+		SwingUtilities.updateComponentTreeUI(this);
+		invalidate();
+		validate();
+		repaint();
 	}
 
 	public EShop GetShop() {
 		return shop;
 	}
-	
+
 	public static void main(String[] args) {
 
 		ShopClientGUI GUI = new ShopClientGUI();
 	}
-
 
 }

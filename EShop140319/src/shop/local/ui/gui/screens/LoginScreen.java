@@ -1,9 +1,12 @@
-package shop.local.ui.gui;
+package shop.local.ui.gui.screens;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+
+import shop.local.ui.gui.ShopClientGUI;
 
 public class LoginScreen extends Screen {
 
@@ -25,7 +28,7 @@ public class LoginScreen extends Screen {
 				gui.ChangeScreen(0);
 			}
 		});
-		panel.add(button);
+		add(button, BorderLayout.SOUTH);
 	}
 
 	

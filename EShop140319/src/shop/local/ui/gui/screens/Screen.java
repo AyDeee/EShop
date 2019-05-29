@@ -1,19 +1,17 @@
-package shop.local.ui.gui;
+package shop.local.ui.gui.screens;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 import shop.local.domain.EShop;
+import shop.local.ui.gui.ShopClientGUI;
 
-public abstract class Screen {
+public abstract class Screen extends JPanel {
 
-	protected JPanel panel;
 	protected ShopClientGUI gui;
 	
 	public Screen(ShopClientGUI gui) {
-		this.gui = gui;
-		panel = new JPanel();
-		panel.setLayout(new MigLayout("","[10:80:120]","40!"));
+		this.gui = gui;		
 		InitializePanel();
 	}
 	
@@ -24,7 +22,4 @@ public abstract class Screen {
 		return gui.GetShop();
 	}
 	
-	public JPanel GetPanel() {
-		return panel;
-	}
 }
