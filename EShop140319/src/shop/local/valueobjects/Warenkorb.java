@@ -25,11 +25,14 @@ public class Warenkorb implements Serializable {
 	}
 
 	public void ArtikelHinzufuegen(Artikel neuerArtikel) {
+
 		Iterator<ArtikelImWarenkorb> it = warenkorbEintraege.iterator();
 		while (it.hasNext()) {
 			ArtikelImWarenkorb artikelImWarenkorb = it.next();
 			if (artikelImWarenkorb.getArtikel().equals(neuerArtikel)) {
-				artikelImWarenkorb.erhoeheAnzahl();
+				if (neuerArtikel.getBestand() > artikelImWarenkorb.getAnzahl()) {
+					artikelImWarenkorb.erhoeheAnzahl();
+				}				
 				return;
 			}
 		}
@@ -38,7 +41,7 @@ public class Warenkorb implements Serializable {
 	}
 
 	public void ArtikelAnzahlAendern(Artikel artikel, int anzahl) throws FalscheBestandsgroesseException {
-		if (artikel.getBestand() < anzahl) {
+		if (artikel.getBestand() <= anzahl) {
 			return;
 		}
 

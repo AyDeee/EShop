@@ -12,10 +12,11 @@ import javax.swing.JScrollPane;
 
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
+import shop.local.valueobjects.Artikel;
 
 public class ArtikelListeScreen extends Screen {
 
-	ArtikelListe liste;
+	ArtikelListe<Artikel> liste;
 	JButton button;
 
 	public ArtikelListeScreen(ShopClientGUI gui) {
@@ -28,7 +29,7 @@ public class ArtikelListeScreen extends Screen {
 		// Layout des Frames: BorderLayout
 		setLayout(new BorderLayout());
 
-		liste = new ArtikelListe(Shop().gibAlleArtikel());
+		liste = new ArtikelListe<Artikel>(Shop().gibAlleArtikel());
 		JScrollPane scrollPane = new JScrollPane(liste);
 		add(scrollPane, BorderLayout.CENTER);
 		button = new JButton("Login");
@@ -45,5 +46,9 @@ public class ArtikelListeScreen extends Screen {
 
 	}
 
+	public Artikel getSelectedArtikel() {
+		int selectedRow = liste.getSelectedRow();
+		return liste.getItem(selectedRow);
+	}
 
 }

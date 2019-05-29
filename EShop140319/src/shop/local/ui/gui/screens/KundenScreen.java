@@ -1,9 +1,7 @@
 package shop.local.ui.gui.screens;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -13,15 +11,17 @@ import shop.local.domain.exceptions.FalscheBestandsgroesseException;
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
 import shop.local.valueobjects.Artikel;
+import shop.local.valueobjects.ArtikelImWarenkorb;
+import shop.local.valueobjects.Kunde;
 
 public class KundenScreen extends Screen {
 
-	ArtikelListe warenkorbListe;
+	ArtikelListe<ArtikelImWarenkorb> warenkorbListe;
 	JButton logout;
 	JButton artikelEinfuegen;
 	JButton artikelEntfernen;
 
-	Vector<Artikel> warenkorb;
+	Kunde eingeloggterKunde;
 	
 	public KundenScreen(ShopClientGUI gui) {
 		super(gui);
@@ -31,17 +31,39 @@ public class KundenScreen extends Screen {
 	protected void InitializePanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		warenkorb = new Vector<Artikel>();
-		try {
-			warenkorb.add(new Artikel("Test", 767,7,2.8f));
-		} catch (FalscheBestandsgroesseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		warenkorbListe = new ArtikelListe(warenkorb);
+
+		warenkorbListe = new ArtikelListe<ArtikelImWarenkorb>();
 		JScrollPane scrollPane = new JScrollPane(warenkorbListe);
 		artikelEinfuegen = new JButton("Einfügen");
+		artikelEinfuegen.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArtikelListeScreen artikelListe = gui.getListe();
+				Artikel selectedArtikel = artikelListe.getSelectedArtikel();
+				eingeloggterKunde.getWarenkorb().ArtikelHinzufuegen(selectedArtikel);
+				updateWarenkorb();
+			}
+		});
+		
+		
 		artikelEntfernen = new JButton("Entfernen");
+		artikelEntfernen.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = warenkorbListe.getSelectedRow();
+				ArtikelImWarenkorb selectedArtikel =  warenkorbListe.getItem(selectedRow);
+				try {
+					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(), selectedArtikel.getAnzahl() - 1);
+				} catch (FalscheBestandsgroesseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				updateWarenkorb();
+			}
+		});
+		
 		logout = new JButton("Abmelden");
 
 		logout.addActionListener(new ActionListener() {
@@ -59,4 +81,13 @@ public class KundenScreen extends Screen {
 
 	}
 
+	public void SetKunde(Kunde kunde) {
+		eingeloggterKunde = kunde;
+	}
+	
+	public void updateWarenkorb() {
+		int selectedRow = warenkorbListe.getSelectedRow();
+		warenkorbListe.updateArtikelList(eingeloggterKunde.getWarenkorb().getWarenkorbEintraege());
+		warenkorbListe.setRowSelectionInterval(selectedRow, selectedRow);
+	}
 }

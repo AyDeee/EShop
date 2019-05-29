@@ -7,6 +7,7 @@ import javax.swing.WindowConstants;
 
 import shop.local.domain.EShop;
 import shop.local.ui.gui.screens.*;
+import shop.local.valueobjects.Kunde;
 
 public class ShopClientGUI extends JFrame {
 
@@ -46,7 +47,7 @@ public class ShopClientGUI extends JFrame {
 		remove(mitarbeiter);
 
 		switch (newState) {
-		case Kunde:
+		case Kunde:					
 			add(liste, BorderLayout.CENTER);
 			add(kunde, BorderLayout.EAST);
 			break;
@@ -72,6 +73,24 @@ public class ShopClientGUI extends JFrame {
 
 	public EShop GetShop() {
 		return shop;
+	}
+
+	
+	
+	public ArtikelListeScreen getListe() {
+		return liste;
+	}
+
+	public LoginScreen getLogin() {
+		return login;
+	}
+
+	public MitarbeiterScreen getMitarbeiter() {
+		return mitarbeiter;
+	}
+
+	public KundenScreen getKunde() {
+		return kunde;
 	}
 
 	public static void main(String[] args) {

@@ -9,7 +9,7 @@ import shop.local.domain.exceptions.FalscheBestandsgroesseException;
  * Klasse zur Repr�sentation einzelner Artikel
  * 
  */
-public class Artikel implements Serializable {
+public class Artikel implements Serializable, IArtikel {
 
 	/**test
 	 * 
@@ -62,13 +62,15 @@ public class Artikel implements Serializable {
 	 * Ab hier Accessor-Methoden
 	 */
 	
-	public int getNummer() {
+	public int getNummer()  {
 		return nummer;
 	}
 
 	public float getPreis() {
 		return preis;
 	}
+	
+	
 	
 	public String getBezeichnung() {
 		return bezeichnung;
@@ -123,6 +125,18 @@ public class Artikel implements Serializable {
 	      return artikelName1.compareTo(artikelName2);
 	    }
 	};
+
+
+	//benötigt für das interface
+	@Override
+	public String getTitel() {
+		return getBezeichnung();
+	}
+
+	@Override
+	public int getAnzahl() {
+		return getBestand();
+	}
 	
 }
 

@@ -2,7 +2,7 @@ package shop.local.valueobjects;
 
 import java.io.Serializable;
 
-public class ArtikelImWarenkorb implements Serializable {
+public class ArtikelImWarenkorb implements Serializable, IArtikel {
 
 	/**
 	 * 
@@ -31,5 +31,20 @@ public class ArtikelImWarenkorb implements Serializable {
 
 	public void setAnzahl(int neueAnzahl) {
 		anzahl = neueAnzahl;
+	}
+
+	@Override
+	public String getTitel() {
+		return artikel.getTitel();
+	}
+
+	@Override
+	public int getNummer() {
+		return artikel.getNummer();
+	}
+
+	@Override
+	public float getPreis() {
+		return artikel.getPreis();
 	}
 }
