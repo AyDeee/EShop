@@ -5,8 +5,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+
 import shop.local.domain.EShop;
+import shop.local.ui.gui.controls.ArtikelListe;
 import shop.local.ui.gui.screens.*;
+import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.Kunde;
 
 public class ShopClientGUI extends JFrame {
@@ -17,6 +20,7 @@ public class ShopClientGUI extends JFrame {
 	LoginScreen login;
 	MitarbeiterScreen mitarbeiter;
 	KundenScreen kunde;
+	ArtikelListe artikelListe;
 
 	public ShopClientGUI() {
 
@@ -69,6 +73,12 @@ public class ShopClientGUI extends JFrame {
 		invalidate();
 		validate();
 		repaint();
+	}
+	
+	public void onArtikelAdded(Artikel artikel) {
+		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
+		java.util.Vector<Artikel> artikell = shop.gibAlleArtikel();
+		artikelListe.updateArtikelList(artikell);
 	}
 
 	public EShop GetShop() {

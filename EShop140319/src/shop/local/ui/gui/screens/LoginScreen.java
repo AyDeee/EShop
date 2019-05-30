@@ -8,6 +8,7 @@ import javax.swing.JButton;
 
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.Mitarbeiter;
 
 public class LoginScreen extends Screen {
 
@@ -26,10 +27,12 @@ public class LoginScreen extends Screen {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Kunde kundeImShop = Shop().loginUeberpruefungKunde(0, "123");
-				gui.getKunde().SetKunde(kundeImShop);
+				Mitarbeiter mitarbeiter = Shop().loginUeberpruefungMitarbeiter(0,"123");
+//				Kunde kundeImShop = Shop().loginUeberpruefungKunde(0, "123");
+//				gui.getKunde().SetKunde(kundeImShop);
+				gui.getMitarbeiter().SetMitarbeiter(mitarbeiter);
 				
-				gui.ChangeScreen(ScreenState.Kunde);
+				gui.ChangeScreen(ScreenState.Mitarbeiter);
 			}
 		});
 		add(button, BorderLayout.SOUTH);
