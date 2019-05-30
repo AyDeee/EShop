@@ -28,7 +28,7 @@ public class MitarbeiterScreen extends Screen {
 	public interface AddArtikelListener {
 		public void onArtikelAdded(Artikel artikel);
 	}
-
+//test
 	private JLabel willkommen;
 	private Mitarbeiter eingeloggterMitarbeiter;
 	private JButton logout;
