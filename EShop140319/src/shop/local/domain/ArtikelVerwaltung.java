@@ -69,6 +69,7 @@ public class ArtikelVerwaltung {
 		// das uebernimmt die ArtikelListe:
 		artikelListe.add(einArtikel);
 		logbuch.NeuerEintrag(true, person, einArtikel, einArtikel.getBestand());
+		
 	}
 
 	

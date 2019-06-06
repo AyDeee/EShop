@@ -50,5 +50,8 @@ public class ArtikelListeScreen extends Screen {
 		int selectedRow = liste.getSelectedRow();
 		return liste.getItem(selectedRow);
 	}
+	public ArtikelListe<Artikel> getListe(){
+		return liste;
+	}
 
 }

@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.JComboBox;
 
 
@@ -25,6 +26,8 @@ public class LoginScreen extends Screen {
 	JComboBox cmbAuswahlListe;
 	JTextField id;
 	JTextField passwort;
+	Kunde kundeImShop;
+	Mitarbeiter mitarbeiterImShop;
 	
 	
 	public LoginScreen(ShopClientGUI gui) {
@@ -86,7 +89,7 @@ public class LoginScreen extends Screen {
 							button.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									Kunde kundeImShop = Shop().loginUeberpruefungKunde(0, "123");
+									kundeImShop = Shop().loginUeberpruefungKunde(0, "123");
 									gui.getKunde().SetKunde(kundeImShop);
 									gui.ChangeScreen(ScreenState.Kunde);
 								}
@@ -96,7 +99,7 @@ public class LoginScreen extends Screen {
 							button.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									Mitarbeiter mitarbeiterImShop = Shop().loginUeberpruefungMitarbeiter(0, "123");
+									mitarbeiterImShop = Shop().loginUeberpruefungMitarbeiter(0, "123");
 									gui.getMitarbeiter().SetMitarbeiter(mitarbeiterImShop);
 									gui.ChangeScreen(ScreenState.Mitarbeiter);
 								}
@@ -112,9 +115,18 @@ public class LoginScreen extends Screen {
 		
 		
 		add(button, BorderLayout.SOUTH);
+		
+		
 
 		
 	}
-
-	
+//	private void InitializeScreens() {
+//
+//		MitarbeiterScreen mitarbeiter = new MitarbeiterScreen(gui, getMitarbeiter());
+//
+//	}
+//
+//	public Mitarbeiter getMitarbeiter() {
+//		return mitarbeiterImShop;
+//	}
 }

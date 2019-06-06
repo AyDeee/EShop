@@ -41,10 +41,11 @@ public class MitarbeiterScreen extends Screen {
 	private EShop shop;
 	private AddArtikelListener addListener;
 	
-	public MitarbeiterScreen(ShopClientGUI gui) {
+	public MitarbeiterScreen(ShopClientGUI gui, EShop shop) {
 		super(gui);
+		this.shop = shop;
 		setupEvents();
-
+		
 	}
 	
 	private void setupEvents() {
@@ -64,9 +65,8 @@ public class MitarbeiterScreen extends Screen {
 		
 		
 		willkommen = new JLabel();
-		willkommen.setText("Hallo " 
-									//+ eingeloggterMitarbeiter.getName()  Nullpointer??
-																		);
+		willkommen.setText("Hallo " /*+ eingeloggterMitarbeiter.getName()*/);
+		
 		add(willkommen);
 		
 		this.add(new JLabel("Bezeichnung:"));
@@ -123,7 +123,7 @@ public class MitarbeiterScreen extends Screen {
 				int nummerAlsInt = Integer.parseInt(nummer);
 				int bestandAlsInt = Integer.parseInt(bestand);
 				float preisAlsFloat = Float.parseFloat(preis);
-				int packungAlsInt = Integer.parseInt(packung);
+				//int packungAlsInt = Integer.parseInt(packung);
 				Artikel artikel;
 				try {
 					artikel= shop.fuegeArtikelEin(bezeichnung, nummerAlsInt, bestandAlsInt, preisAlsFloat, eingeloggterMitarbeiter);
@@ -135,7 +135,7 @@ public class MitarbeiterScreen extends Screen {
 					packungTextFeld.setText("");
 
 					// Am Ende Listener, d.h. unseren Frame benachrichtigen:
-					addListener.onArtikelAdded(artikel);
+					gui.onArtikelAdded(artikel);
 				} catch (FalscheBestandsgroesseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

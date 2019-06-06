@@ -20,28 +20,31 @@ public class ShopClientGUI extends JFrame {
 	LoginScreen login;
 	MitarbeiterScreen mitarbeiter;
 	KundenScreen kunde;
-	ArtikelListe artikelListe;
+	ArtikelListe<Artikel> artikelListe;
 
 	public ShopClientGUI() {
 
 		shop = new EShop();
 		setLayout(new BorderLayout());
-
 		InitializeScreens();
 
 		ChangeScreen(ScreenState.Startup);
 		setSize(640, 480);
 		setVisible(true);
 		setLocationRelativeTo(null);
+		
 	}
 
 	private void InitializeScreens() {
 		liste = new ArtikelListeScreen(this);
+		mitarbeiter = new MitarbeiterScreen(this, shop);
 		login = new LoginScreen(this);
-		mitarbeiter = new MitarbeiterScreen(this);
 		kunde = new KundenScreen(this);
 		
+		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+	
 	}
 
 	public void ChangeScreen(ScreenState newState) {
@@ -78,7 +81,9 @@ public class ShopClientGUI extends JFrame {
 	public void onArtikelAdded(Artikel artikel) {
 		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
 		java.util.Vector<Artikel> artikell = shop.gibAlleArtikel();
+		artikelListe = liste.getListe();
 		artikelListe.updateArtikelList(artikell);
+		shop.Save();
 	}
 
 	public EShop GetShop() {

@@ -41,5 +41,7 @@ public class ArtikelListe<T extends IArtikel> extends JTable {
 		ArtikelListItem<T> tableModel = (ArtikelListItem<T>) getModel();
 		return tableModel.getItem(row);
 	}
+	
+
 
 }
