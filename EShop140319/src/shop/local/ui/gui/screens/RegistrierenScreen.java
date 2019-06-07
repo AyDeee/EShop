@@ -57,6 +57,7 @@ public class RegistrierenScreen extends Screen{
 	JComboBox cmbAuswahlListe;
 	
 	boolean m = false;
+	private JButton back;
 	
 	public RegistrierenScreen(ShopClientGUI gui) {
 		super(gui);
@@ -204,46 +205,30 @@ public class RegistrierenScreen extends Screen{
 	    this.setSize(1280, 720);
 	    this.setVisible(true);
 	    
+	    registerButton.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									
+									if (cmbAuswahlListe.getSelectedItem() == "Mitarbeiter") {
+										mitarbeiterEinfuegen();
+									}else {
+										kundeEinfuegen();
+									}
+
+								}
+							});
 	    
-	    cmbAuswahlListe.addActionListener(new ActionListener() { 
-	    	public void actionPerformed(ActionEvent e) {
-			
-				if (e.getSource() == cmbAuswahlListe) {
-					JComboBox cb = (JComboBox)e.getSource();
-					String msg = (String)cb.getSelectedItem();
-					
-					switch(msg) {
-						case "Mitarbeiter":
-							registerButton.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									
-									mitarbeiterEinfuegen();
-									gui.ChangeScreen(ScreenState.Mitarbeiter);	
-									
-								}
-							});
-						break;
-						case "Kunde":
-							registerButton.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									
-									kundeEinfuegen();
-									gui.ChangeScreen(ScreenState.Kunde);	
-									
-								}
-							});
-						break;
-						
-						default: System.out.println("Ein Fehler ist aufgetreten.");
-					}
-					
-				}
-				
+	    back = new JButton("zurueck");
+
+		back.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.ChangeScreen(ScreenState.Startup);
 			}
-		});
-		    
+		});  
+		
+		regButtonPanel.add(back);
 }
 
 	
@@ -264,7 +249,7 @@ public class RegistrierenScreen extends Screen{
 			try {
 				Mitarbeiter mitarbeiter = shop.fuegeMitarbeiterEin(name, strasse, nr, plz, ort, iban, pw);
 				System.out.println("Registrieren erfolgreich - Ihre ID: " + mitarbeiter.getId());
-
+				gui.ChangeScreen(ScreenState.Mitarbeiter);
 			} catch (MitarbeiterExistiertBereitsException me) {
 				// Hier Fehlerbehandlung
 				System.out.println(me.getMessage());
@@ -291,7 +276,7 @@ public class RegistrierenScreen extends Screen{
 			try {
 				Kunde kunde = shop.fuegeKundeEin(name, strasse, nr, plz, ort, iban, pw);
 				System.out.println("Registrieren erfolgreich - Ihre ID: " + kunde.getId());
-
+				gui.ChangeScreen(ScreenState.Kunde);
 			} catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung
 				System.out.println(ke.getMessage());

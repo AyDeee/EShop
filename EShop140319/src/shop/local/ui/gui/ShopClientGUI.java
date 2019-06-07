@@ -21,7 +21,10 @@ public class ShopClientGUI extends JFrame {
 	RegistrierenScreen registrieren;
 	MitarbeiterScreen mitarbeiter;
 	KundenScreen kunde;
+	LoginButtonScreen loginButton;
+	
 	ArtikelListe<Artikel> artikelListe;
+	
 
 	public ShopClientGUI() {
 
@@ -42,6 +45,7 @@ public class ShopClientGUI extends JFrame {
 		login = new LoginScreen(this);
 		registrieren = new RegistrierenScreen(this);
 		kunde = new KundenScreen(this);
+		loginButton = new LoginButtonScreen(this);
 		
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -55,6 +59,7 @@ public class ShopClientGUI extends JFrame {
 		remove(registrieren);
 		remove(kunde);
 		remove(mitarbeiter);
+		remove(loginButton);
 
 		switch (newState) {
 		case Kunde:					
@@ -73,6 +78,7 @@ public class ShopClientGUI extends JFrame {
 			break;
 		case Startup:
 			add(liste, BorderLayout.CENTER);
+			add(loginButton, BorderLayout.NORTH);
 			break;
 		default:
 			break;
@@ -124,5 +130,8 @@ public class ShopClientGUI extends JFrame {
 
 		ShopClientGUI GUI = new ShopClientGUI();
 	}
-
+	
+	public LoginButtonScreen getLoginButton() {
+		return loginButton;
+	}
 }

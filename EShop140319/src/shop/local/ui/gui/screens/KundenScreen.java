@@ -70,6 +70,7 @@ public class KundenScreen extends Screen {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				eingeloggterKunde = null;
 				gui.ChangeScreen(ScreenState.Startup);
 			}
 		});

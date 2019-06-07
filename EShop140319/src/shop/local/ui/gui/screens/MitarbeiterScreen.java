@@ -96,6 +96,7 @@ public class MitarbeiterScreen extends Screen {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				eingeloggterMitarbeiter = null;
 				gui.ChangeScreen(ScreenState.Startup);
 			}
 		});
