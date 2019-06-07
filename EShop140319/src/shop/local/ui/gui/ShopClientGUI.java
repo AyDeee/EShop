@@ -18,6 +18,7 @@ public class ShopClientGUI extends JFrame {
 
 	ArtikelListeScreen liste;
 	LoginScreen login;
+	RegistrierenScreen registrieren;
 	MitarbeiterScreen mitarbeiter;
 	KundenScreen kunde;
 	ArtikelListe<Artikel> artikelListe;
@@ -39,6 +40,7 @@ public class ShopClientGUI extends JFrame {
 		liste = new ArtikelListeScreen(this);
 		mitarbeiter = new MitarbeiterScreen(this, shop);
 		login = new LoginScreen(this);
+		registrieren = new RegistrierenScreen(this);
 		kunde = new KundenScreen(this);
 		
 		
@@ -50,6 +52,7 @@ public class ShopClientGUI extends JFrame {
 	public void ChangeScreen(ScreenState newState) {
 		remove(liste);
 		remove(login);
+		remove(registrieren);
 		remove(kunde);
 		remove(mitarbeiter);
 
@@ -60,6 +63,9 @@ public class ShopClientGUI extends JFrame {
 			break;
 		case Login:
 			add(login, BorderLayout.CENTER);
+			break;
+		case Registrieren:
+			add(registrieren, BorderLayout.CENTER);
 			break;
 		case Mitarbeiter:
 			add(liste, BorderLayout.CENTER);
@@ -85,6 +91,8 @@ public class ShopClientGUI extends JFrame {
 		artikelListe.updateArtikelList(artikell);
 		shop.Save();
 	}
+	
+
 
 	public EShop GetShop() {
 		return shop;
@@ -98,6 +106,10 @@ public class ShopClientGUI extends JFrame {
 
 	public LoginScreen getLogin() {
 		return login;
+	}
+	
+	public RegistrierenScreen getRegistrieren() {
+		return registrieren;
 	}
 
 	public MitarbeiterScreen getMitarbeiter() {

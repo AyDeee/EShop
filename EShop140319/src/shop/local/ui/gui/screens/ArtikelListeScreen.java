@@ -38,7 +38,7 @@ public class ArtikelListeScreen extends Screen {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.ChangeScreen(ScreenState.Login);
+				gui.ChangeScreen(ScreenState.Registrieren);
 			}
 		});
 
