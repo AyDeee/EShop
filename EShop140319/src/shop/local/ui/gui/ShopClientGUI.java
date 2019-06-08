@@ -74,7 +74,7 @@ public class ShopClientGUI extends JFrame {
 			break;
 		case Mitarbeiter:
 			add(liste, BorderLayout.CENTER);
-			add(mitarbeiter, BorderLayout.EAST);
+			add(mitarbeiter, BorderLayout.SOUTH);
 			break;
 		case Startup:
 			add(liste, BorderLayout.CENTER);
