@@ -1,6 +1,8 @@
 package shop.local.ui.gui;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -104,8 +106,6 @@ public class ShopClientGUI extends JFrame {
 		return shop;
 	}
 
-	
-	
 	public ArtikelListeScreen getListe() {
 		return liste;
 	}
@@ -125,13 +125,13 @@ public class ShopClientGUI extends JFrame {
 	public KundenScreen getKunde() {
 		return kunde;
 	}
-
-	public static void main(String[] args) {
-
-		ShopClientGUI GUI = new ShopClientGUI();
-	}
 	
 	public LoginButtonScreen getLoginButton() {
 		return loginButton;
+	}
+	
+	public static void main(String[] args) {
+
+		ShopClientGUI GUI = new ShopClientGUI();
 	}
 }

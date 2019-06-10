@@ -33,6 +33,7 @@ public class ArtikelListItem<T extends IArtikel> extends AbstractTableModel{
         artikel.addAll(aktuelleArtikel);
         fireTableDataChanged();
     }
+    
 
 	@Override
 	public int getRowCount() {

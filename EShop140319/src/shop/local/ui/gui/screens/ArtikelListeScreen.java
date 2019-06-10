@@ -15,22 +15,27 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
 import shop.local.valueobjects.Artikel;
+import shop.local.valueobjects.IArtikel;
+import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.Mitarbeiter;
 
 public class ArtikelListeScreen extends Screen {
 
 	ArtikelListe<Artikel> liste;
-
 	private JTextField searchTextField;
 	private JButton searchButton;
-
+	private JComboBox cmbAuswahlListe;
+	
 	public ArtikelListeScreen(ShopClientGUI gui) {
 		super(gui);
 	}
@@ -57,7 +62,7 @@ public class ArtikelListeScreen extends Screen {
 		this.add(searchLabel);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.WEST;
+		//c.anchor = GridBagConstraints.WEST;
 
 		searchTextField = new JTextField();
 		searchTextField.setToolTipText("Suchbegriff eingeben.");
@@ -98,7 +103,25 @@ public class ArtikelListeScreen extends Screen {
 				liste.updateArtikelList(suchErgebnis);
 			}
 		});
-
+		
+		String[] auswahl = { "Nummer sortieren", "Alphabetisch sortieren" };
+		cmbAuswahlListe = new JComboBox(auswahl);
+		// cmbAuswahlListe.setSize(cmbAuswahlListe.getPreferredSize());
+		// add(cmbAuswahlListe, BorderLayout.NORTH);
+		c.insets = new Insets(50, 0, 0, 0);
+		c.gridx = 1;
+		c.weightx = 0.2;
+		gridBagLayout.setConstraints(cmbAuswahlListe, c);
+		cmbAuswahlListe.setSelectedIndex(0);
+		this.add(cmbAuswahlListe);
+		
+		cmbAuswahlListe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateListe();
+			}
+		});
+		
 		liste = new ArtikelListe<Artikel>(Shop().gibAlleArtikel());
 		JScrollPane scrollPane = new JScrollPane(liste);
 		c.insets = new Insets(20, 0, 0, 0);
@@ -110,7 +133,16 @@ public class ArtikelListeScreen extends Screen {
 		gridBagLayout.setConstraints(scrollPane, c);
 		this.add(scrollPane);
 	}
-
+	
+	public void updateListe() {
+		if (cmbAuswahlListe.getSelectedItem() == "Nummer sortieren") {
+			liste.sortierenNummer(Shop().gibAlleArtikel());
+		}else {
+			liste.sortierenAlphabetisch(Shop().gibAlleArtikel());
+		}
+		
+	}
+	
 	public Artikel getSelectedArtikel() {
 		int selectedRow = liste.getSelectedRow();
 		return liste.getItem(selectedRow);

@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.swing.JTable;
 
+import shop.local.ui.gui.screens.ArtikelListeScreen;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.IArtikel;
 
 public class ArtikelListe<T extends IArtikel> extends JTable {
-
 	public ArtikelListe() {
 		super();
 		// TableModel erzeugen ...
@@ -26,22 +26,26 @@ public class ArtikelListe<T extends IArtikel> extends JTable {
 
 	public void updateArtikelList(List<T> artikel) {
 
-		// Sortierung (mit Lambda-Expression)
-		// Collections.sort(buecher, (b1, b2) ->
-		// b1.getTitel().compareTo(b2.getTitel())); // Sortierung nach Titel
-		Collections.sort(artikel, (b1, b2) -> b1.getNummer() - b2.getNummer()); // Sortierung nach Nummer
-
-		// TableModel von JTable holen und ...
-		ArtikelListItem<T> tableModel = (ArtikelListItem<T>) getModel();
-		// ... Inhalt aktualisieren
-		tableModel.setArtikel(artikel);
+		sortierenNummer(artikel);
 	}
 
 	public T getItem(int row) {
 		ArtikelListItem<T> tableModel = (ArtikelListItem<T>) getModel();
 		return tableModel.getItem(row);
 	}
-	
 
+	public void sortierenNummer(List<T> artikel) {
+		Collections.sort(artikel, (b1, b2) -> b1.getNummer() - b2.getNummer());
+		ArtikelListItem<T> tableModel = (ArtikelListItem<T>) getModel();
+		// ... Inhalt aktualisieren
+		tableModel.setArtikel(artikel);
+	}
+
+	public void sortierenAlphabetisch(List<T> artikel) {
+		Collections.sort(artikel, (b1, b2) -> b1.getTitel().toLowerCase().compareTo(b2.getTitel().toLowerCase()));
+		ArtikelListItem<T> tableModel = (ArtikelListItem<T>) getModel();
+		// ... Inhalt aktualisieren
+		tableModel.setArtikel(artikel);
+	}
 
 }
