@@ -235,6 +235,7 @@ public class KundenScreen extends Screen {
 
 	public void SetKunde(Kunde kunde) {
 		eingeloggterKunde = kunde;
+		updateWarenkorb();
 	}
 
 	public void updateWarenkorb() {

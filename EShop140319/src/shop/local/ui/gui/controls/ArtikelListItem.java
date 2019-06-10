@@ -7,12 +7,13 @@ import javax.swing.table.AbstractTableModel;
 
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.IArtikel;
+import shop.local.valueobjects.Massengutartikel;
 
 public class ArtikelListItem<T extends IArtikel> extends AbstractTableModel{
 
 
 	private List<T> artikel;
-    private String[] spaltenNamen = { "Nummer","Titel", "Anzahl", "Preis in €" };
+    private String[] spaltenNamen = { "Nummer","Titel", "Anzahl", "Preis in €", "Packungsgroesse" };
 
     
     public ArtikelListItem() {
@@ -62,6 +63,12 @@ public class ArtikelListItem<T extends IArtikel> extends AbstractTableModel{
                 return gewaehlterArtikel.getAnzahl();
             case 3:
             	return gewaehlterArtikel.getPreis();
+            case 4:
+            	if(gewaehlterArtikel instanceof Massengutartikel) {
+            		return ((Massengutartikel) gewaehlterArtikel).getPackungsgroesse();
+            	}
+            	return 1;
+            	
             default:
                 return null;
         }

@@ -179,7 +179,7 @@ public class MitarbeiterScreen extends Screen {
 		c.gridy = 1;
 		add(preisTextField, c);
 
-		JLabel packungsgroesseText = new JLabel(" Packung á: ");
+		JLabel packungsgroesseText = new JLabel(" Packung ï¿½: ");
 		c.gridx = 8;
 		c.gridy = 1;
 		add(packungsgroesseText, c);
@@ -335,11 +335,11 @@ public class MitarbeiterScreen extends Screen {
 				if (packungAlsInt>1) {
 					artikel = shop.fuegeMassengutArtikelEin(bezeichnung, nummerAlsInt, bestandAlsInt, preisAlsFloat, packungAlsInt, eingeloggterMitarbeiter);
 					// Am Ende Listener, d.h. unseren Frame benachrichtigen:
-					gui.onArtikelAdded(artikel);
+					gui.onArtikelAdded();
 				}else if (packungAlsInt==1) {
 					artikel= shop.fuegeArtikelEin(bezeichnung, nummerAlsInt, bestandAlsInt, preisAlsFloat, eingeloggterMitarbeiter);
 					// Am Ende Listener, d.h. unseren Frame benachrichtigen:
-					gui.onArtikelAdded(artikel);
+					gui.onArtikelAdded();
 				}
 				nummerTextField.setText("");
 				bezeichnungTextField.setText("");
@@ -359,7 +359,7 @@ public class MitarbeiterScreen extends Screen {
 			Artikel artikel = null;
 			artikel = shop.sucheNachNummer(nummerAlsInt);
 			artikel= shop.loescheArtikel(artikel.getNummer(), eingeloggterMitarbeiter);
-			gui.onArtikelAdded(artikel);
+			gui.onArtikelAdded();
 		}
 		nummerTextField2.setText("");
 	}
@@ -374,8 +374,8 @@ public class MitarbeiterScreen extends Screen {
 			int bestandAlsInt = Integer.parseInt(bestand);
 			Artikel artikel = null;
 			artikel = shop.sucheNachNummer(nummerAlsInt);
-			artikel= shop.bestandErhoehen(nummerAlsInt, bestandAlsInt, eingeloggterMitarbeiter);
-			gui.onArtikelAdded(artikel);
+			artikel = shop.bestandErhoehen(nummerAlsInt, bestandAlsInt, eingeloggterMitarbeiter);
+			gui.onArtikelAdded();
 		}
 		nummerTextField3.setText("");
 		bestandTextField2.setText("");

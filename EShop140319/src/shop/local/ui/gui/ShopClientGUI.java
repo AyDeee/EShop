@@ -39,6 +39,14 @@ public class ShopClientGUI extends JFrame {
 		setVisible(true);
 		setLocationRelativeTo(null);
 		
+		Runtime.getRuntime().addShutdownHook(new Thread()
+		{
+		    @Override
+		    public void run()
+		    {
+		        shop.Save();
+		    }
+		});
 	}
 
 	private void InitializeScreens() {
@@ -92,8 +100,8 @@ public class ShopClientGUI extends JFrame {
 		repaint();
 	}
 	
-	public void onArtikelAdded(Artikel artikel) {
-		// Ich lade hier einfach alle Bücher neu und lasse sie anzeigen
+	public void onArtikelAdded() {
+		// Ich lade hier einfach alle Artikel neu und lasse sie anzeigen
 		java.util.Vector<Artikel> artikell = shop.gibAlleArtikel();
 		artikelListe = liste.getListe();
 		artikelListe.updateArtikelList(artikell);
