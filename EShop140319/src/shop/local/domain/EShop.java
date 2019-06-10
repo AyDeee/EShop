@@ -121,11 +121,11 @@ public class EShop {
 		
 		if(bestandserhoehung > 0)
 		{
-			logbuch.NeuerEintrag(true, person, richtigerArtikel, bestandserhoehung);// true war Einlagern false war Auslagern
+			logbuch.NeuerEintrag(true, person, richtigerArtikel, neuerBestand);// true war Einlagern false war Auslagern
 //			logbuch.NeuerEintrag(EreignisTyp.EINLAGERUNG, person, artikel, anzahl);
 			richtigerArtikel.setBestand(neuerBestand);
 		}else {
-			logbuch.NeuerEintrag(false, person, richtigerArtikel, bestandserhoehung);
+			logbuch.NeuerEintrag(false, person, richtigerArtikel, neuerBestand);
 //			logbuch.NeuerEintrag(EreignisTyp.AUSLAGERUNG, person, artikel, anzahl);
 			
 			richtigerArtikel.setBestand(neuerBestand);
@@ -149,8 +149,8 @@ public class EShop {
 				// Bestandsreduzierung über ArtikelVerwaltung
 				try {
 					artikel.setBestand(artikel.getBestand() - artikelImWarenkorb.getAnzahl());
+					logbuch.NeuerEintrag(false, kunde, artikel, artikel.getBestand());
 				} catch (FalscheBestandsgroesseException e) {}
-				logbuch.NeuerEintrag(false, kunde, artikel, artikelImWarenkorb.getAnzahl());
 			}
 			else if (artikel.getBestand() == artikelImWarenkorb.getAnzahl())
 			{
