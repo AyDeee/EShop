@@ -6,6 +6,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import shop.local.valueobjects.Artikel;
+import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.IArtikel;
 import shop.local.valueobjects.Massengutartikel;
 
@@ -66,6 +67,12 @@ public class ArtikelListItem<T extends IArtikel> extends AbstractTableModel{
             case 4:
             	if(gewaehlterArtikel instanceof Massengutartikel) {
             		return ((Massengutartikel) gewaehlterArtikel).getPackungsgroesse();
+            	}
+            	if(gewaehlterArtikel instanceof ArtikelImWarenkorb) {
+            		ArtikelImWarenkorb a = (ArtikelImWarenkorb) gewaehlterArtikel;
+            		if(a.getArtikel() instanceof Massengutartikel) {
+                		return ((Massengutartikel) a.getArtikel()).getPackungsgroesse();
+                	}
             	}
             	return 1;
             	

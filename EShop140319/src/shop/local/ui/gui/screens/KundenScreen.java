@@ -18,11 +18,14 @@ import javax.swing.JTextField;
 
 import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.FalscheBestandsgroesseException;
+import shop.local.ui.gui.RechnungsFrame;
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
+import shop.local.valueobjects.Massengutartikel;
+import shop.local.valueobjects.Rechnung;
 
 public class KundenScreen extends Screen {
 
@@ -88,8 +91,14 @@ public class KundenScreen extends Screen {
 				
 				ArtikelImWarenkorb selectedArtikel = warenkorbListe.getItem(selectedRow);
 				try {
+					int aenderung = selectedArtikel.getAnzahl() - 1;
+					if (selectedArtikel.getArtikel() instanceof Massengutartikel) {
+						int packungsgroesse = ((Massengutartikel)selectedArtikel.getArtikel()).getPackungsgroesse();
+						aenderung = selectedArtikel.getAnzahl() - packungsgroesse;
+					}
 					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(),
-							selectedArtikel.getAnzahl() - 1);
+							aenderung);
+				
 				} catch (FalscheBestandsgroesseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -114,8 +123,12 @@ public class KundenScreen extends Screen {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = warenkorbListe.getSelectedRow();
+				if	(selectedRow < 0) {
+					return;
+				}
 				ArtikelImWarenkorb selectedArtikel = warenkorbListe.getItem(selectedRow);
 				try {
+					
 					String nr = ArtikelAnzahlAendernTextField.getText();
 					int anzahl = Integer.parseInt(nr);
 					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(), anzahl);
@@ -199,8 +212,9 @@ public class KundenScreen extends Screen {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (eingeloggterKunde.getWarenkorb() != null) {
+					Rechnung rechnung = null;
 					try {
-						gui.GetShop().kaufeArtikelImWarenkorb(eingeloggterKunde);
+						rechnung = gui.GetShop().kaufeArtikelImWarenkorb(eingeloggterKunde);
 					} catch (ArtikelExistiertNichtException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -208,6 +222,7 @@ public class KundenScreen extends Screen {
 					eingeloggterKunde.getWarenkorb().WarenkorbLeeren();
 					updateWarenkorb();
 					gui.getListe().updateListe();
+					new RechnungsFrame(rechnung);
 				}
 			}
 		});

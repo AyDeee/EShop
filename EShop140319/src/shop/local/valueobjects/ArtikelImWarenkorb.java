@@ -2,6 +2,8 @@ package shop.local.valueobjects;
 
 import java.io.Serializable;
 
+import shop.local.domain.exceptions.FalscheBestandsgroesseException;
+
 public class ArtikelImWarenkorb implements Serializable, IArtikel {
 
 	/**
@@ -11,18 +13,24 @@ public class ArtikelImWarenkorb implements Serializable, IArtikel {
 
 	public ArtikelImWarenkorb(Artikel neuerArtikel) {
 		artikel = neuerArtikel;
-		anzahl = 1;
+		erhoeheAnzahl();
 	}
 
 	private Artikel artikel;
-	private int anzahl;
+	private int anzahl = 0;
 
 	public Artikel getArtikel() {
 		return artikel;
 	}
 
 	public void erhoeheAnzahl() {
+		if (artikel instanceof Massengutartikel) {
+			anzahl += ((Massengutartikel)artikel).getPackungsgroesse();//Typumwandlung --> artikel ist vom Typ Artikel jetzt wird es in Massengut umgewandelt
+		}
+		else
+		{
 		anzahl++;
+		}
 	}
 
 	public int getAnzahl() {
@@ -30,7 +38,17 @@ public class ArtikelImWarenkorb implements Serializable, IArtikel {
 	}
 
 	public void setAnzahl(int neueAnzahl) {
-		anzahl = neueAnzahl;
+		if (artikel instanceof Massengutartikel) {
+			Massengutartikel masse = (Massengutartikel)artikel;
+			if (masse.ueberpruefeAnzahl(neueAnzahl)) {
+				anzahl = neueAnzahl;
+			}
+		}
+		else
+		{
+			anzahl = neueAnzahl;
+		}
+		
 	}
 
 	@Override

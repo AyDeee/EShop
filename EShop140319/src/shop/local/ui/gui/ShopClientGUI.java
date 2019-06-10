@@ -35,7 +35,7 @@ public class ShopClientGUI extends JFrame {
 		InitializeScreens();
 
 		ChangeScreen(ScreenState.Startup);
-		setSize(640, 480);
+		setSize(1080, 720);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		

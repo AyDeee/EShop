@@ -20,6 +20,8 @@ import shop.local.domain.EShop;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
 import shop.local.domain.exceptions.ArtikelExistiertNichtException;
 import shop.local.domain.exceptions.FalscheBestandsgroesseException;
+import shop.local.ui.gui.LogbuchFrame;
+import shop.local.ui.gui.RechnungsFrame;
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
 import shop.local.valueobjects.Artikel;
@@ -108,6 +110,15 @@ public class MitarbeiterScreen extends Screen {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+					}
+				});
+		
+		logbuchButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent ae) {
+						System.out.println("Event: " + ae.getActionCommand());
+						new LogbuchFrame(shop.getLogbuch());
 					}
 				});
 	}
