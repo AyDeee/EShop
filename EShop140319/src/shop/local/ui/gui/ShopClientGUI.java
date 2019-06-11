@@ -108,7 +108,7 @@ public class ShopClientGUI extends JFrame {
 		shop.Save();
 	}
 	
-
+//test
 
 	public EShop GetShop() {
 		return shop;
