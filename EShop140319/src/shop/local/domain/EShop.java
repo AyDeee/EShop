@@ -263,9 +263,17 @@ public class EShop {
 		return logbuch;
 	}
 	
+	
+	public LogbuchEintrag sucheNachLogbuchEintrag(int nummer) {
+
+		return logbuch.sucheEindeutigenArtikel(nummer);
+	}
+	
 	public ArtikelVerwaltung getArtikelVerwaltung() {
 		return meineArtikel;
 	}
+
+
 	
 
 }
