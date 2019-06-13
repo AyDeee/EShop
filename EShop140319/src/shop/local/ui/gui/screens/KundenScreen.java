@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -134,7 +135,7 @@ public class KundenScreen extends Screen {
 					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(), anzahl);
 				} catch (FalscheBestandsgroesseException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Diese Menge ist nicht mehr verfuegbar", "",JOptionPane.ERROR_MESSAGE);
 				}
 				updateWarenkorb();				
 			}
@@ -217,7 +218,7 @@ public class KundenScreen extends Screen {
 						rechnung = gui.GetShop().kaufeArtikelImWarenkorb(eingeloggterKunde);
 					} catch (ArtikelExistiertNichtException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Artikel ausverkauft", "",JOptionPane.ERROR_MESSAGE);
 					}
 					eingeloggterKunde.getWarenkorb().WarenkorbLeeren();
 					updateWarenkorb();

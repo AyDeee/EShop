@@ -39,8 +39,7 @@ public class ShopClientGUI extends JFrame {
 		setVisible(true);
 		setLocationRelativeTo(null);
 		
-		Runtime.getRuntime().addShutdownHook(new Thread()
-		{
+		Runtime.getRuntime().addShutdownHook(new Thread(){
 		    @Override
 		    public void run()
 		    {
