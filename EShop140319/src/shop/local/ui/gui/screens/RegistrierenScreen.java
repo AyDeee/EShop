@@ -27,6 +27,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -247,12 +248,14 @@ public class RegistrierenScreen extends Screen{
 				&& !nr.isEmpty() && !iban.isEmpty()) {
 			
 			try {
-				Mitarbeiter mitarbeiter = shop.fuegeMitarbeiterEin(name, strasse, nr, plz, ort, iban, pw);
-				System.out.println("Registrieren erfolgreich - Ihre ID: " + mitarbeiter.getId());
+				Mitarbeiter mitarbeiter = Shop().fuegeMitarbeiterEin(name, strasse, nr, plz, ort, iban, pw);
+				gui.GetShop().Save();
+				JOptionPane.showMessageDialog(null, "Deine User-ID ist"+ mitarbeiter.getId(), "title", JOptionPane.INFORMATION_MESSAGE);
 				gui.ChangeScreen(ScreenState.Mitarbeiter);
 			} catch (MitarbeiterExistiertBereitsException me) {
 				// Hier Fehlerbehandlung
 				System.out.println(me.getMessage());
+				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			
@@ -274,12 +277,14 @@ public class RegistrierenScreen extends Screen{
 				&& !nr.isEmpty() && !iban.isEmpty()) {
 			
 			try {
-				Kunde kunde = shop.fuegeKundeEin(name, strasse, nr, plz, ort, iban, pw);
-				System.out.println("Registrieren erfolgreich - Ihre ID: " + kunde.getId());
+				Kunde kunde = Shop().fuegeKundeEin(name, strasse, nr, plz, ort, iban, pw);
+				gui.GetShop().Save();
+				JOptionPane.showMessageDialog(null, "Deine User-ID ist"+ kunde.getId(), "title", JOptionPane.INFORMATION_MESSAGE);
 				gui.ChangeScreen(ScreenState.Kunde);
 			} catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung
 				System.out.println(ke.getMessage());
+				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			
