@@ -1,4 +1,5 @@
 package shop.local.domain;
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -44,6 +45,18 @@ public class EShop {
 		logbuch.Save();
 	}
 	
+	
+	public int aktuellerBestand(int nummer) throws ArtikelExistiertNichtException {
+		return meineArtikel.gibArtikel(nummer).getBestand();
+		
+	}
+	
+	public int artikelStatistik(int nummer, int date) throws ArtikelExistiertNichtException {
+		Artikel a = meineArtikel.gibArtikel(nummer);
+		return logbuch.artikelStatistik(a, date);
+//		Artikel a = new Artikel(nummer);
+//		return meineEreignisse.artikelStatistik(a, date);
+	}
 /**
  * 
  * - - - - - - - - ARTIKEL - - - - - - - - - - - - 

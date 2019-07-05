@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import shop.local.persistance.PersistenceManager;
 import shop.local.valueobjects.Artikel;
+
 import shop.local.valueobjects.Kunde;
 import shop.local.valueobjects.LogbuchEintrag;
 import shop.local.valueobjects.Mitarbeiter;
@@ -58,6 +59,24 @@ public class Logbuch {
 		}
 
 		return null;
+	}
+	
+	public int artikelStatistik(Artikel a, int date) { 
+	      int bestand = 0;
+	      
+	      for(int i = 0; i<eintraege.size();i++) {
+	    		LogbuchEintrag l = eintraege.get(i);
+	    		if( l.getDatum()==date && l.getArtikel().equals(a)) {
+	    			if(l.getTyp().equals("Einlagerung")) {
+	    				bestand -= l.getArtikel().getBestand();
+	    			} else if(l.getTyp().equals("Auslagerung")) {
+	    				bestand += l.getArtikel().getBestand();
+	    			}
+	    		}
+	    	}
+	    	return bestand;
+	 
+
 	}
 
 	public int[] getBestandsHistorie(int nummer) {

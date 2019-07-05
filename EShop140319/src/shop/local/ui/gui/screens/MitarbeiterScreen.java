@@ -127,7 +127,7 @@ public class MitarbeiterScreen extends Screen {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new BestandsGraphFrame(shop.getLogbuch(), gui.getListe().getSelectedArtikel());				
+				new BestandsGraphFrame(shop);				
 			}
 		});
 	}

@@ -49,5 +49,9 @@ public class LogbuchEintrag implements Serializable {
 	public Person getPerson() {
 		return person;
 	}
+	
+	public EreignisTyp getTyp() {
+		return aktion;
+	}
 
 }
