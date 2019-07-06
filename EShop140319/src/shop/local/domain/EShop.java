@@ -1,6 +1,8 @@
 package shop.local.domain;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
@@ -46,16 +48,25 @@ public class EShop {
 	}
 	
 	
-	public int aktuellerBestand(int nummer) throws ArtikelExistiertNichtException {
-		return meineArtikel.gibArtikel(nummer).getBestand();
-		
+
+	
+	public int aktuellerBestand(int nr) {
+		Artikel a = meineArtikel.sucheEindeutigenArtikel(nr);	
+		System.out.println(a);
+		int neuerBestand = a.getBestand();
+		return neuerBestand;
+
 	}
 	
 	public int artikelStatistik(int nummer, int date) throws ArtikelExistiertNichtException {
 		Artikel a = meineArtikel.gibArtikel(nummer);
 		return logbuch.artikelStatistik(a, date);
-//		Artikel a = new Artikel(nummer);
-//		return meineEreignisse.artikelStatistik(a, date);
+
+	}
+	
+	public void graphArtikelFinden(int nummer) throws ArtikelExistiertNichtException {
+		Artikel a = new Artikel(nummer);
+		meineArtikel.graphArtikelFinden(a);
 	}
 /**
  * 
@@ -213,6 +224,7 @@ public class EShop {
 	
 	public static int getDayOfYear()
 	{
+
 		Calendar calendar = Calendar.getInstance();
 		return calendar.get(Calendar.DAY_OF_YEAR); 
 	}

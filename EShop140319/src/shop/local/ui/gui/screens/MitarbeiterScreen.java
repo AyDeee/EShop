@@ -1,11 +1,14 @@
 package shop.local.ui.gui.screens;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
 import shop.local.domain.EShop;
 import shop.local.domain.exceptions.ArtikelExistiertBereitsException;
 import shop.local.domain.exceptions.ArtikelExistiertNichtException;
@@ -25,6 +29,7 @@ import shop.local.ui.gui.LogbuchFrame;
 import shop.local.ui.gui.RechnungsFrame;
 import shop.local.ui.gui.ShopClientGUI;
 import shop.local.ui.gui.controls.ArtikelListe;
+import shop.local.ui.gui.controls.BestandsgraphPanel;
 import shop.local.valueobjects.Artikel;
 import shop.local.valueobjects.ArtikelImWarenkorb;
 import shop.local.valueobjects.Kunde;
@@ -57,6 +62,7 @@ public class MitarbeiterScreen extends Screen {
 	private JButton abmeldenButton;
 	private JButton einfuegenButton;
 	private JButton loeschenButton;
+	private BestandsgraphPanel graph;
 
 	public MitarbeiterScreen(ShopClientGUI gui, EShop shop) {
 		super(gui);
@@ -126,9 +132,20 @@ public class MitarbeiterScreen extends Screen {
 		bestandsHistorieButton.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				new BestandsGraphFrame(shop);				
-			}
+			public void actionPerformed(ActionEvent ae) {
+					
+						try {
+							new BestandsgraphPanel(gui, shop);
+							System.out.println("halohsdf");
+							bestandshistorie();
+							
+						} catch (ArtikelExistiertNichtException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+				}
+			
 		});
 	}
 
@@ -285,6 +302,10 @@ public class MitarbeiterScreen extends Screen {
 		c.gridy = 6;
 		c.gridwidth = 1;
 		add(bestandsHistorieButton, c);
+		
+		JPanel graphPanel = new JPanel();
+		graph = new BestandsgraphPanel(gui, shop);
+		graphPanel.add(graph);
 
 		abmeldenButton = new JButton("Abmelden");
 		c.gridx = 2;
@@ -402,6 +423,14 @@ public class MitarbeiterScreen extends Screen {
 
 	public void SetMitarbeiter(Mitarbeiter mitarbeiter) {
 		eingeloggterMitarbeiter = mitarbeiter;
+	}
+	
+	public void bestandshistorie() throws ArtikelExistiertNichtException {
+		ArtikelListeScreen artikelListe = gui.getListe();
+		Artikel selectedArtikel = artikelListe.getSelectedArtikel();
+		int nummer = selectedArtikel.getNummer();
+		shop.graphArtikelFinden(nummer);
+		graph.setNummer(nummer);
 	}
 
 }

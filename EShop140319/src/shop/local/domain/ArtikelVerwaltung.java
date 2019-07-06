@@ -37,6 +37,18 @@ public class ArtikelVerwaltung {
 			e.printStackTrace();
 		}
 	}
+	
+    public void graphArtikelFinden(Artikel a) throws ArtikelExistiertNichtException {
+ 	   if (!artikelListe.contains(a)) {
+				throw new ArtikelExistiertNichtException("Artikel wurde nicht gefunden.");
+			}
+    }
+    
+    public Artikel findeArtikel(Artikel a) {
+			int index;
+			index = artikelListe.indexOf(a);
+			return artikelListe.get(index);	
+		}
 
 	public void Save() {
 		try {
