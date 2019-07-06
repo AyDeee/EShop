@@ -67,33 +67,34 @@ public class MitarbeiterScreen extends Screen {
 
 	private void setupEvents() {
 		einfuegenButton.addActionListener(
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ae) {
-						System.out.println("Event: " + ae.getActionCommand());
-						try {
-							artikelEinfuegen();
-						} catch (ArtikelExistiertBereitsException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (FalscheBestandsgroesseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+			new ActionListener() {
+			@Override
+				public void actionPerformed(ActionEvent ae) {
+					System.out.println("Event: " + ae.getActionCommand());
+					try {
+						artikelEinfuegen();
+					} catch (ArtikelExistiertBereitsException ea) {
+						System.out.println(ea.getMessage());
+						JOptionPane.showMessageDialog(null, ea.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+						//ae.printStackTrace();
+					} catch (FalscheBestandsgroesseException e) {
+						System.out.println(e.getMessage());
+						JOptionPane.showMessageDialog(null, e.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+						//e.printStackTrace();
 					}
-				});
+				}
+			});
 		loeschenButton.addActionListener(
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent ae) {
 						System.out.println("Event: " + ae.getActionCommand());
-						
-							try {
-								artikelLoeschen();
-							} catch (ArtikelExistiertNichtException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+						try {
+							artikelLoeschen();
+						} catch (ArtikelExistiertNichtException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+							System.out.println(e.getMessage());
+						}
 
 					}
 				});
@@ -102,15 +103,18 @@ public class MitarbeiterScreen extends Screen {
 					@Override
 					public void actionPerformed(ActionEvent ae) {
 						System.out.println("Event: " + ae.getActionCommand());
-								try {
-									artikelAnzahlAendern();
-								} catch (FalscheBestandsgroesseException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (ArtikelExistiertNichtException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+						try {
+							artikelAnzahlAendern();
+						} catch (FalscheBestandsgroesseException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+							//e.printStackTrace();
+							System.out.println(e.getMessage());
+						} catch (ArtikelExistiertNichtException e2) {
+							//e.printStackTrace();
+							System.out.println(e2.getMessage());
+							JOptionPane.showMessageDialog(null, e2.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+
+						}
 					}
 				});
 		
@@ -139,9 +143,6 @@ public class MitarbeiterScreen extends Screen {
 		//
 		// add(pane);
 		GridBagConstraints c = new GridBagConstraints();
-		// c.weightx = 1;
-		// c.weighty = 1;
-		// c.fill = GridBagConstraints.HORIZONTAL;
 
 		setLayout(new GridBagLayout());
 

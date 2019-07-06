@@ -68,7 +68,6 @@ public class RegistrierenScreen extends Screen{
 
 	protected void InitializePanel() {
 	    
-
 	    JPanel regPanel = new JPanel();
 	    regPanel.setBorder(BorderFactory.createTitledBorder("REGISTRIEREN"));
 
@@ -207,17 +206,17 @@ public class RegistrierenScreen extends Screen{
 	    this.setVisible(true);
 	    
 	    registerButton.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 									
-									if (cmbAuswahlListe.getSelectedItem() == "Mitarbeiter") {
-										mitarbeiterEinfuegen();
-									}else {
-										kundeEinfuegen();
-									}
+	    		if (cmbAuswahlListe.getSelectedItem() == "Mitarbeiter") {
+	    			mitarbeiterEinfuegen();
+				}else {
+					kundeEinfuegen();
+				}
 
-								}
-							});
+			}
+		});
 	    
 	    back = new JButton("zurueck");
 

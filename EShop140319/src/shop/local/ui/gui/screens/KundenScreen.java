@@ -100,9 +100,9 @@ public class KundenScreen extends Screen {
 					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(),
 							aenderung);
 				
-				} catch (FalscheBestandsgroesseException e1) {
-					JOptionPane.showMessageDialog(null, "Die Bestandsgroesse ist inkorrekt.", "",JOptionPane.ERROR_MESSAGE);
-					// TODO Auto-generated catch block
+				} catch (FalscheBestandsgroesseException fb) {
+					JOptionPane.showMessageDialog(null, fb.getMessage(), "",JOptionPane.ERROR_MESSAGE);
+					System.out.println(fb.getMessage());
 					//e1.printStackTrace();
 				}
 				updateWarenkorb();
@@ -135,7 +135,7 @@ public class KundenScreen extends Screen {
 					int anzahl = Integer.parseInt(nr);
 					eingeloggterKunde.getWarenkorb().ArtikelAnzahlAendern(selectedArtikel.getArtikel(), anzahl);
 				} catch (FalscheBestandsgroesseException e1) {
-					// TODO Auto-generated catch block
+					System.out.println(e1.getMessage());
 					JOptionPane.showMessageDialog(null, "Diese Menge ist nicht mehr verfuegbar", "",JOptionPane.ERROR_MESSAGE);
 				}
 				updateWarenkorb();				
@@ -219,6 +219,7 @@ public class KundenScreen extends Screen {
 						rechnung = gui.GetShop().kaufeArtikelImWarenkorb(eingeloggterKunde);
 					} catch (ArtikelExistiertNichtException e1) {
 						// TODO Auto-generated catch block
+						System.out.println(e1.getMessage());
 						JOptionPane.showMessageDialog(null, "Artikel ausverkauft", "",JOptionPane.ERROR_MESSAGE);
 					}
 					eingeloggterKunde.getWarenkorb().WarenkorbLeeren();
