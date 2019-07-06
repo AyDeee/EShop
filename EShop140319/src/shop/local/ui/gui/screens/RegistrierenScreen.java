@@ -255,7 +255,7 @@ public class RegistrierenScreen extends Screen{
 			} catch (MitarbeiterExistiertBereitsException me) {
 				// Hier Fehlerbehandlung
 				System.out.println(me.getMessage());
-				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Dieser Mitarbeiter existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			
@@ -284,7 +284,7 @@ public class RegistrierenScreen extends Screen{
 			} catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung
 				System.out.println(ke.getMessage());
-				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Dieser Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			
