@@ -68,7 +68,6 @@ public class RegistrierenScreen extends Screen{
 
 	protected void InitializePanel() {
 	    
-
 	    JPanel regPanel = new JPanel();
 	    regPanel.setBorder(BorderFactory.createTitledBorder("REGISTRIEREN"));
 
@@ -207,17 +206,17 @@ public class RegistrierenScreen extends Screen{
 	    this.setVisible(true);
 	    
 	    registerButton.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
+	    	@Override
+			public void actionPerformed(ActionEvent e) {
 									
-									if (cmbAuswahlListe.getSelectedItem() == "Mitarbeiter") {
-										mitarbeiterEinfuegen();
-									}else {
-										kundeEinfuegen();
-									}
+	    		if (cmbAuswahlListe.getSelectedItem() == "Mitarbeiter") {
+	    			mitarbeiterEinfuegen();
+				}else {
+					kundeEinfuegen();
+				}
 
-								}
-							});
+			}
+		});
 	    
 	    back = new JButton("zurueck");
 
@@ -255,7 +254,7 @@ public class RegistrierenScreen extends Screen{
 			} catch (MitarbeiterExistiertBereitsException me) {
 				// Hier Fehlerbehandlung
 				System.out.println(me.getMessage());
-				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Dieser Mitarbeiter existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			
@@ -284,7 +283,7 @@ public class RegistrierenScreen extends Screen{
 			} catch (KundeExistiertBereitsException ke) {
 				// Hier Fehlerbehandlung
 				System.out.println(ke.getMessage());
-				JOptionPane.showMessageDialog(null, "Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Dieser Kunde existiert bereits", "",JOptionPane.ERROR_MESSAGE);
 				// me.printStackTrace()
 			}
 			

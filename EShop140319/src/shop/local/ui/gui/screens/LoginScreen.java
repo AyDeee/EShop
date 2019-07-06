@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -171,11 +172,17 @@ public class LoginScreen extends Screen {
 				gui.ChangeScreen(ScreenState.Mitarbeiter);
 
 			}
+			else {
+				JOptionPane.showMessageDialog(null, "Lieber Mitarbeiter, bitte pruefen Sie Ihre Eingaben oder registrieren Sie sich.", "",JOptionPane.ERROR_MESSAGE);
+			}
 		} else {
 			Kunde kunde = Shop().loginUeberpruefungKunde(id, pw);
 			if (kunde != null) {
 				gui.getKunde().SetKunde(kunde);
 				gui.ChangeScreen(ScreenState.Kunde);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Sehr geehrter Kunde, bitte pruefen Sie Ihre Eingaben oder registrieren Sie sich.", "",JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
