@@ -181,9 +181,9 @@ public class BestandsgraphPanel extends Screen {
 	    
 	    public List<Double> nummerErmitteln(int nummer) throws ArtikelExistiertNichtException {
 	    	List<Double> liste = new ArrayList<>();
-	    	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+	    	SimpleDateFormat format = new SimpleDateFormat("ddd");
 			Date now = new Date();
-	       Calendar calendar = new GregorianCalendar();
+	       Calendar calendar = Calendar.getInstance();
 
 	       calendar.setTime(now);
 	       calendar.add(Calendar.DAY_OF_YEAR, 1);
