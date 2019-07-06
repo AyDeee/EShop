@@ -184,15 +184,16 @@ public class BestandsgraphPanel extends Screen {
 	    	SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 			Date now = new Date();
 	       Calendar calendar = new GregorianCalendar();
+
 	       calendar.setTime(now);
-	       calendar.add(Calendar.DATE, 1);
+	       calendar.add(Calendar.DAY_OF_YEAR, 1);
 	  	 	Date future = calendar.getTime();
 	  	 	System.out.println(nummer);
 	  	 	double bestand = gui.GetShop().aktuellerBestand(nummer);
 	        System.out.println(bestand);
 //	        y1 = bestand*5;
 		     for(int i = 0; i < 31 ; i++) {
-		    	 calendar.add(Calendar.DATE, -1);
+		    	 calendar.add(Calendar.DAY_OF_YEAR, -1);
 		    	 future = calendar.getTime();
 		    	 String d = format.format(future);
 		    	 System.out.println(d);
