@@ -101,8 +101,9 @@ public class KundenScreen extends Screen {
 							aenderung);
 				
 				} catch (FalscheBestandsgroesseException e1) {
+					JOptionPane.showMessageDialog(null, "Die Bestandsgroesse ist inkorrekt.", "",JOptionPane.ERROR_MESSAGE);
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				updateWarenkorb();
 				int rows =warenkorbListe.getRowCount();
